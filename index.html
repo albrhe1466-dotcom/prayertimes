@@ -361,4 +361,140 @@
 </body>
 </html>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Non-Islamic Countries Prayer Times</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #004080;
+    }
+    .widgets-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .prayer-widget {
+      border: 2px solid #004080;
+      border-radius: 10px;
+      background: #ffffff;
+      width: 250px;   /* square width */
+      height: 250px;  /* square height */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10px;
+    }
+    .prayer-widget h2 {
+      color: #008080;
+      margin-bottom: 10px;
+    }
+    .prayer-widget ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .prayer-widget li {
+      margin: 3px 0;
+      font-size: 14px;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+  <h1>Non-Islamic Countries Prayer Times</h1>
+
+  <div class="widgets-row">
+    <!-- USA Widget -->
+    <div id="usa-widget" class="prayer-widget">
+      <h2>United States</h2>
+      <ul>
+        <li>Fajr: <span id="usa-fajr"></span></li>
+        <li>Dhuhr: <span id="usa-dhuhr"></span></li>
+        <li>Asr: <span id="usa-asr"></span></li>
+        <li>Maghrib: <span id="usa-maghrib"></span></li>
+        <li>Isha: <span id="usa-isha"></span></li>
+      </ul>
+    </div>
+
+    <!-- UK Widget -->
+    <div id="uk-widget" class="prayer-widget">
+      <h2>United Kingdom</h2>
+      <ul>
+        <li>Fajr: <span id="uk-fajr"></span></li>
+        <li>Dhuhr: <span id="uk-dhuhr"></span></li>
+        <li>Asr: <span id="uk-asr"></span></li>
+        <li>Maghrib: <span id="uk-maghrib"></span></li>
+        <li>Isha: <span id="uk-isha"></span></li>
+      </ul>
+    </div>
+
+    <!-- Canada Widget -->
+    <div id="canada-widget" class="prayer-widget">
+      <h2>Canada</h2>
+      <ul>
+        <li>Fajr: <span id="canada-fajr"></span></li>
+        <li>Dhuhr: <span id="canada-dhuhr"></span></li>
+        <li>Asr: <span id="canada-asr"></span></li>
+        <li>Maghrib: <span id="canada-maghrib"></span></li>
+        <li>Isha: <span id="canada-isha"></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // USA (New York)
+    fetch("https://api.aladhan.com/v1/timingsByCity?city=New%20York&country=United%20States&method=2")
+      .then(res => res.json())
+      .then(data => {
+        const t = data.data.timings;
+        document.getElementById("usa-fajr").textContent = t.Fajr;
+        document.getElementById("usa-dhuhr").textContent = t.Dhuhr;
+        document.getElementById("usa-asr").textContent = t.Asr;
+        document.getElementById("usa-maghrib").textContent = t.Maghrib;
+        document.getElementById("usa-isha").textContent = t.Isha;
+      });
+
+    // UK (London)
+    fetch("https://api.aladhan.com/v1/timingsByCity?city=London&country=United%20Kingdom&method=2")
+      .then(res => res.json())
+      .then(data => {
+        const t = data.data.timings;
+        document.getElementById("uk-fajr").textContent = t.Fajr;
+        document.getElementById("uk-dhuhr").textContent = t.Dhuhr;
+        document.getElementById("uk-asr").textContent = t.Asr;
+        document.getElementById("uk-maghrib").textContent = t.Maghrib;
+        document.getElementById("uk-isha").textContent = t.Isha;
+      });
+
+    // Canada (Toronto)
+    fetch("https://api.aladhan.com/v1/timingsByCity?city=Toronto&country=Canada&method=2")
+      .then(res => res.json())
+      .then(data => {
+        const t = data.data.timings;
+        document.getElementById("canada-fajr").textContent = t.Fajr;
+        document.getElementById("canada-dhuhr").textContent = t.Dhuhr;
+        document.getElementById("canada-asr").textContent = t.Asr;
+        document.getElementById("canada-maghrib").textContent = t.Maghrib;
+        document.getElementById("canada-isha").textContent = t.Isha;
+      });
+  </script>
+</body>
+</html>
 <!-- test rebuild -->
