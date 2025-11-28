@@ -497,4 +497,204 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>موقعي مع صندوق المحادثة</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Tahoma", Arial, sans-serif;
+      background: #fff;
+      color: #222;
+    }
+
+    h1 {
+      padding: 20px;
+      margin: 0;
+    }
+
+    /* صندوق المحادثة */
+    .assistant {
+      position: fixed;
+      top: 120px; /* نزّلناه أكثر حتى لا يغطي العنوان */
+      left: 0;
+      width: 320px;
+      height: calc(100vh - 120px);
+      background: #fff;
+      border-right: 3px solid green;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 12px rgba(0,0,0,0.1);
+    }
+
+    /* على الهواتف يظهر في الأسفل */
+    @media (max-width: 600px) {
+      .assistant {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40%;
+        border-right: none;
+        border-top: 3px solid green;
+        top: auto;
+      }
+    }
+
+    .header {
+      background: green;
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f9fff9;
+    }
+
+    .msg {
+      max-width: 80%;
+      padding: 10px;
+      border-radius: 10px;
+      line-height: 1.4;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    .msg.user { align-self: flex-end; background: #e0ffe0; }
+    .msg.bot { align-self: flex-start; background: #f0f0f0; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .composer {
+      display: flex;
+      border-top: 1px solid #ccc;
+      padding: 8px;
+      background: #fff;
+    }
+    #input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    #send {
+      margin-right: 8px;
+      padding: 8px 12px;
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* نقاط الكتابة */
+    .typing-dots span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-left: 3px;
+      border-radius: 50%;
+      background: #666;
+      animation: blink 1s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0.3; }
+      40% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- محتوى الموقع -->
+  <h1>مرحبًا بكم في موقعي</h1>
+  <p style="padding:20px;">هذه الصفحة الرئيسية. صندوق المحادثة يظهر على الجانب أو في الأسفل على الهاتف.</p>
+
+  <!-- صندوق المحادثة -->
+  <div class="assistant">
+    <div class="header">صندوق المحادثة (AI Talk Box)</div>
+    <div id="messages" class="messages">
+      <div class="msg bot"><strong>المساعد:</strong> عذرًا، ميزة الذكاء الاصطناعي ما زالت قيد التطوير ولا تعمل بعد.</div>
+    </div>
+    <div class="composer">
+      <input id="input" type="text" placeholder="اكتب رسالتك هنا…">
+      <button id="send">إرسال</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const sendEl = document.getElementById('send');
+
+    function append(role, text) {
+      const div = document.createElement('div');
+      div.className = `msg ${role}`;
+      div.innerHTML = `<strong>${role==='user'?'أنت':'المساعد'}:</strong> ${text}`;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = "msg bot";
+      div.id = "typing";
+      div.innerHTML = `<strong>المساعد:</strong> <span class="typing-dots"><span></span><span></span><span></span></span>`;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function hideTyping() {
+      const t = document.getElementById('typing');
+      if (t) t.remove();
+    }
+
+    function typewriter(text) {
+      const div = document.createElement('div');
+      div.className = "msg bot";
+      messagesEl.appendChild(div);
+
+      let i = 0;
+      function tick() {
+        div.innerHTML = `<strong>المساعد:</strong> ${text.substring(0, i)}`;
+        i++;
+        if (i <= text.length) {
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+          setTimeout(tick, 20);
+        }
+      }
+      tick();
+    }
+
+    function send() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+      inputEl.value = '';
+      append('user', text);
+      showTyping();
+      setTimeout(() => {
+        hideTyping();
+        typewriter("عذرًا، ميزة الذكاء الاصطناعي ما زالت قيد التطوير ولا تعمل بعد.");
+      }, 800);
+    }
+
+    sendEl.addEventListener('click', send);
+    inputEl.addEventListener('keydown', e => { if (e.key==='Enter') send(); });
+  </script>
+
+</body>
+</html>
 <!-- test rebuild -->
