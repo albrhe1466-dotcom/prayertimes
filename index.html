@@ -697,3 +697,160 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مواقيت الصلاة</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      background: #006400;
+      color: white;
+      padding: 15px;
+      margin: 0;
+    }
+
+    .widgets {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .widget {
+      width: 250px;
+      height: 250px;
+      background: white;
+      border: 2px solid #006400;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .widget h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #006400;
+    }
+
+    /* AI Talk Box */
+    .talk-box {
+      background: #e0ffe0;
+      border-top: 2px solid #006400;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    /* Mobile-only section */
+    .non-islamic {
+      display: none; /* hidden on PC */
+    }
+
+    @media (max-width: 768px) {
+      .non-islamic {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 20px;
+        margin-top: 20px;
+        border-top: 2px solid #006400;
+      }
+      .non-islamic-title {
+        width: 100%;
+        font-size: 22px;
+        font-weight: bold;
+        background: #006400;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>مواقيت الصلاة</h1>
+
+  <!-- Islamic countries widgets -->
+  <div class="widgets">
+    <div class="widget">
+      <h2>السعودية</h2>
+      <p>الفجر: 5:00</p>
+      <p>الظهر: 12:00</p>
+      <p>العصر: 3:30</p>
+      <p>المغرب: 6:00</p>
+      <p>العشاء: 7:30</p>
+    </div>
+    <div class="widget">
+      <h2>القاهرة</h2>
+      <p>الفجر: 4:50</p>
+      <p>الظهر: 11:55</p>
+      <p>العصر: 3:25</p>
+      <p>المغرب: 5:55</p>
+      <p>العشاء: 7:25</p>
+    </div>
+    <div class="widget">
+      <h2>دبي</h2>
+      <p>الفجر: 5:10</p>
+      <p>الظهر: 12:05</p>
+      <p>العصر: 3:35</p>
+      <p>المغرب: 6:05</p>
+      <p>العشاء: 7:35</p>
+    </div>
+  </div>
+
+  <!-- AI Talk Box -->
+  <div class="talk-box">
+    <h2>صندوق المحادثة مع الذكاء الاصطناعي</h2>
+    <p>... هنا يظهر النص الثابت للمساعد ...</p>
+  </div>
+
+  <!-- Mobile-only Non-Islamic Countries -->
+  <div class="non-islamic">
+    <div class="non-islamic-title">الدول غير الإسلامية</div>
+
+    <div class="widget">
+      <h2>الولايات المتحدة الأمريكية</h2>
+      <p>الفجر: 5:20</p>
+      <p>الظهر: 12:10</p>
+      <p>العصر: 3:40</p>
+      <p>المغرب: 6:10</p>
+      <p>العشاء: 7:40</p>
+    </div>
+
+    <div class="widget">
+      <h2>المملكة المتحدة</h2>
+      <p>الفجر: 5:30</p>
+      <p>الظهر: 12:15</p>
+      <p>العصر: 3:45</p>
+      <p>المغرب: 6:15</p>
+      <p>العشاء: 7:45</p>
+    </div>
+
+    <div class="widget">
+      <h2>كندا</h2>
+      <p>الفجر: 5:40</p>
+      <p>الظهر: 12:20</p>
+      <p>العصر: 3:50</p>
+      <p>المغرب: 6:20</p>
+      <p>العشاء: 7:50</p>
+    </div>
+  </div>
+
+</body>
+</html>
