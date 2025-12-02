@@ -991,3 +991,54 @@
     if(e.key==="Enter"){ sendBtn.click(); }
   });
 </script>
+<div id="noorai-messages"></div>
+<input id="noorai-input" type="text" placeholder="Type here…" />
+<button id="noorai-send">Send</button>
+
+<script>
+  const msgs = document.getElementById('noorai-messages');
+  const input = document.getElementById('noorai-input');
+  const sendBtn = document.getElementById('noorai-send');
+
+  function addMessage(text, role){
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function respond(text){
+    const lower = text.toLowerCase();
+    if(lower.includes("qibla") || lower.includes("قبلة")){
+      addMessage("🕋 Qibla is towards Mecca","ai");
+    } else if(lower.includes("weather") || lower.includes("طقس")){
+      addMessage("Weather: 25°C Sunny, wind 15 km/h","ai");
+    } else if(lower.includes("wind") || lower.includes("رياح")){
+      addMessage("Wind power: 15 km/h","ai");
+    } else if(lower.includes("moujem") || lower.includes("معجم")){
+      addMessage("Salat Mu‘jam:\n• Fajr\n• Dhuhr\n• Asr\n• Maghrib\n• Isha","ai");
+    } else if(lower.includes("prayer") || lower.includes("أوقات")){
+      addMessage("Prayer times today: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
+    } else if(lower.includes("wudu") || lower.includes("وضوء")){
+      addMessage("Wudu steps: intention, wash hands, rinse mouth, inhale water, wash face, wash arms, wipe head, wash feet","ai");
+    } else {
+      addMessage("I didn’t understand, ask about prayer, Qibla, weather, wind, or wudu","ai");
+    }
+  }
+
+  sendBtn.onclick = ()=>{
+    const v = input.value.trim();
+    if(!v) return;
+    addMessage(v,"user");   // always show your message
+    input.value="";
+    respond(v);             // always force a reply
+  };
+
+  input.addEventListener('keydown', e=>{
+    if(e.key==="Enter"){ sendBtn.click(); }
+  });
+
+  // Initial greeting
+  addMessage("Hello this is NoorAI. here to help and assist you","ai");
+</script>
