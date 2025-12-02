@@ -1291,3 +1291,92 @@
     respond(v);
   };
 </script>
+<!-- NoorAI Widget -->
+<div id="noorai-widget"></div>
+<style>
+  #noorai-widget * { box-sizing: border-box; font-family: Inter, Arial, sans-serif; }
+  #noorai-panel {
+    position: fixed; right: 20px; bottom: 20px;
+    width: 420px; max-height: 80vh;
+    background: #111827; border-radius: 12px;
+    display: grid; grid-template-rows: auto 1fr auto;
+    overflow: hidden; z-index: 99999; color: #e5e7eb;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  }
+  #noorai-header { padding: 10px; background: rgba(17,24,39,0.9); border-bottom: 1px solid rgba(255,255,255,0.1); }
+  #noorai-title { font-weight: bold; font-size: 15px; }
+  #noorai-subtitle { font-size: 13px; color: #9ca3af; }
+  #noorai-messages { padding: 10px; overflow-y: auto; }
+  .msg { margin: 6px 0; }
+  .msg.user { text-align: right; color: #22c55e; }
+  .msg.ai { text-align: left; color: #60a5fa; }
+  #noorai-composer { display: flex; border-top: 1px solid rgba(255,255,255,0.1); }
+  #noorai-input { flex: 1; border: none; padding: 10px; background: rgba(255,255,255,0.05); color: #e5e7eb; }
+  #noorai-send { background: #22c55e; border: none; color: white; padding: 10px 14px; cursor: pointer; border-radius: 8px; }
+  @media (max-width: 768px){ #noorai-panel { right:10px; left:10px; width:auto; bottom:10px; max-height:60vh; } }
+</style>
+
+<script>
+  // Mount widget
+  const mount = document.getElementById('noorai-widget');
+  mount.innerHTML = `
+    <div id="noorai-panel">
+      <div id="noorai-header">
+        <div id="noorai-title">NoorAI — Salat Assistant</div>
+        <div id="noorai-subtitle">Ask in English or Arabic</div>
+      </div>
+      <div id="noorai-messages"></div>
+      <div id="noorai-composer">
+        <input id="noorai-input" type="text" placeholder="Type here…" />
+        <button id="noorai-send">Send</button>
+      </div>
+    </div>
+  `;
+
+  const msgs = document.getElementById('noorai-messages');
+  const input = document.getElementById('noorai-input');
+  const sendBtn = document.getElementById('noorai-send');
+
+  function addMessage(text, role){
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function respond(text){
+    const lang = /[\u0600-\u06FF]/.test(text) ? "ar" : "en";
+    const lower = text.toLowerCase();
+
+    if(/qibla|قبلة/.test(lower)){
+      addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai");
+    } else if(/weather|طقس/.test(lower)){
+      addMessage(lang==="ar"?"الطقس الآن: 25° مشمس (تجريبي)":"Current weather: 25°C Sunny (demo)","ai");
+    } else if(/moujem|معجم|meaning|ما هو/.test(lower)){
+      addMessage(lang==="ar"?"مُعجم الصلاة:\n• الفجر: صلاة الفجر\n• الظهر: صلاة الظهر\n• العصر: صلاة العصر\n• المغرب: صلاة المغرب\n• العشاء: صلاة العشاء":
+                           "Salat Mu‘jam:\n• Fajr: Dawn prayer\n• Dhuhr: Noon prayer\n• Asr: Afternoon prayer\n• Maghrib: Sunset prayer\n• Isha: Night prayer","ai");
+    } else if(/prayer|أوقات/.test(lower)){
+      addMessage(lang==="ar"?"أوقات الصلاة اليوم: الفجر 05:00، الظهر 12:05، العصر 15:30، المغرب 17:45، العشاء 19:15":
+                           "Prayer times today: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
+    } else {
+      addMessage(lang==="ar"?"لم أفهم، اسأل عن الصلاة أو القبلة أو الطقس":"I didn’t understand, ask about prayer, Qibla, or weather","ai");
+    }
+  }
+
+  // Greetings
+  addMessage("Hello this is NoorAI. here to help and assist you","ai");
+  addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai");
+
+  // Event listeners
+  sendBtn.onclick = ()=>{
+    const v = input.value.trim();
+    if(!v) return;
+    addMessage(v,"user");
+    input.value="";
+    respond(v);
+  };
+  input.addEventListener('keydown', e=>{
+    if(e.key==="Enter"){ sendBtn.click(); }
+  });
+</script>
