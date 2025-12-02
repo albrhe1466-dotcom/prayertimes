@@ -938,3 +938,56 @@
     respond(v);
   };
 </script>
+<script>
+  const msgs = document.getElementById('noorai-messages');
+  const input = document.getElementById('noorai-input');
+  const sendBtn = document.getElementById('noorai-send');
+
+  function addMessage(text, role){
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function respond(text){
+    const lang = /[\u0600-\u06FF]/.test(text) ? "ar" : "en";
+    const lower = text.toLowerCase();
+
+    if(/qibla|قبلة/.test(lower)){
+      addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai");
+    } else if(/weather|طقس/.test(lower)){
+      addMessage(lang==="ar"?"الطقس الآن: 25° مشمس، سرعة الرياح 15 كم/س":"Weather now: 25°C Sunny, wind speed 15 km/h","ai");
+    } else if(/wind|رياح/.test(lower)){
+      addMessage(lang==="ar"?"قوة الرياح: 15 كم/س":"Wind power: 15 km/h","ai");
+    } else if(/moujem|معجم|meaning|ما هو/.test(lower)){
+      addMessage(lang==="ar"?"مُعجم الصلاة:\n• الفجر: صلاة الفجر\n• الظهر: صلاة الظهر\n• العصر: صلاة العصر\n• المغرب: صلاة المغرب\n• العشاء: صلاة العشاء":
+                           "Salat Mu‘jam:\n• Fajr: Dawn prayer\n• Dhuhr: Noon prayer\n• Asr: Afternoon prayer\n• Maghrib: Sunset prayer\n• Isha: Night prayer","ai");
+    } else if(/prayer|أوقات/.test(lower)){
+      addMessage(lang==="ar"?"أوقات الصلاة اليوم: الفجر 05:00، الظهر 12:05، العصر 15:30، المغرب 17:45، العشاء 19:15":
+                           "Prayer times today: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
+    } else if(/wudu|وضوء/.test(lower)){
+      addMessage(lang==="ar"?"خطوات الوضوء: النية، غسل اليدين، المضمضة، الاستنشاق، غسل الوجه، غسل اليدين إلى المرفقين، مسح الرأس، غسل القدمين":
+                           "Steps of Wudu: intention, wash hands, rinse mouth, inhale water, wash face, wash arms to elbows, wipe head, wash feet","ai");
+    } else {
+      addMessage(lang==="ar"?"لم أفهم، اسأل عن الصلاة أو القبلة أو الطقس أو الوضوء":"I didn’t understand, ask about prayer, Qibla, weather, wind, or wudu","ai");
+    }
+  }
+
+  // Greetings
+  addMessage("Hello this is NoorAI. here to help and assist you","ai");
+  addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai");
+
+  // Event listeners
+  sendBtn.onclick = ()=>{
+    const v = input.value.trim();
+    if(!v) return;
+    addMessage(v,"user");
+    input.value="";
+    respond(v);
+  };
+  input.addEventListener('keydown', e=>{
+    if(e.key==="Enter"){ sendBtn.click(); }
+  });
+</script>
