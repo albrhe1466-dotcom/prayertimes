@@ -19,7 +19,7 @@
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Noto Naskh Arabic",Tahoma,Arial,sans-serif}
     a{color:var(--green);text-decoration:none}
-
+    
     /* Header */
     header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid #eee;z-index:50}
     .topbar{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px}
@@ -360,7 +360,9 @@
   </script>
 </body>
 </html>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -498,9 +500,8 @@
 </body>
 </html>
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-   <!-- NoorAI Sidebar Widget: append-only -->
+<html lang="en">
+  <!-- NoorAI Sidebar Widget: append-only -->
 <div id="noorai-sidebar-widget"></div>
 <style>
   /* Scoped styles under #noorai-sidebar-widget to avoid conflicts */
@@ -937,207 +938,4 @@
     input.value="";
     respond(v);
   };
-</script>
-<script>
-  const msgs = document.getElementById('noorai-messages');
-  const input = document.getElementById('noorai-input');
-  const sendBtn = document.getElementById('noorai-send');
-
-  function addMessage(text, role){
-    const div = document.createElement('div');
-    div.className = 'msg ' + role;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function respond(text){
-    const lang = /[\u0600-\u06FF]/.test(text) ? "ar" : "en";
-    const lower = text.toLowerCase();
-
-    if(/qibla|قبلة/.test(lower)){
-      addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai");
-    } else if(/weather|طقس/.test(lower)){
-      addMessage(lang==="ar"?"الطقس الآن: 25° مشمس، سرعة الرياح 15 كم/س":"Weather now: 25°C Sunny, wind speed 15 km/h","ai");
-    } else if(/wind|رياح/.test(lower)){
-      addMessage(lang==="ar"?"قوة الرياح: 15 كم/س":"Wind power: 15 km/h","ai");
-    } else if(/moujem|معجم|meaning|ما هو/.test(lower)){
-      addMessage(lang==="ar"?"مُعجم الصلاة:\n• الفجر: صلاة الفجر\n• الظهر: صلاة الظهر\n• العصر: صلاة العصر\n• المغرب: صلاة المغرب\n• العشاء: صلاة العشاء":
-                           "Salat Mu‘jam:\n• Fajr: Dawn prayer\n• Dhuhr: Noon prayer\n• Asr: Afternoon prayer\n• Maghrib: Sunset prayer\n• Isha: Night prayer","ai");
-    } else if(/prayer|أوقات/.test(lower)){
-      addMessage(lang==="ar"?"أوقات الصلاة اليوم: الفجر 05:00، الظهر 12:05، العصر 15:30، المغرب 17:45، العشاء 19:15":
-                           "Prayer times today: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
-    } else if(/wudu|وضوء/.test(lower)){
-      addMessage(lang==="ar"?"خطوات الوضوء: النية، غسل اليدين، المضمضة، الاستنشاق، غسل الوجه، غسل اليدين إلى المرفقين، مسح الرأس، غسل القدمين":
-                           "Steps of Wudu: intention, wash hands, rinse mouth, inhale water, wash face, wash arms to elbows, wipe head, wash feet","ai");
-    } else {
-      addMessage(lang==="ar"?"لم أفهم، اسأل عن الصلاة أو القبلة أو الطقس أو الوضوء":"I didn’t understand, ask about prayer, Qibla, weather, wind, or wudu","ai");
-    }
-  }
-
-  // Greetings
-  addMessage("Hello this is NoorAI. here to help and assist you","ai");
-  addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai");
-
-  // Event listeners
-  sendBtn.onclick = ()=>{
-    const v = input.value.trim();
-    if(!v) return;
-    addMessage(v,"user");
-    input.value="";
-    respond(v);
-  };
-  input.addEventListener('keydown', e=>{
-    if(e.key==="Enter"){ sendBtn.click(); }
-  });
-</script>
-<div id="noorai-messages"></div>
-<input id="noorai-input" type="text" placeholder="Type here…" />
-<button id="noorai-send">Send</button>
-
-<script>
-  const msgs = document.getElementById('noorai-messages');
-  const input = document.getElementById('noorai-input');
-  const sendBtn = document.getElementById('noorai-send');
-
-  function addMessage(text, role){
-    const div = document.createElement('div');
-    div.className = 'msg ' + role;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function respond(text){
-    const lower = text.toLowerCase();
-    if(lower.includes("qibla") || lower.includes("قبلة")){
-      addMessage("🕋 Qibla is towards Mecca","ai");
-    } else if(lower.includes("weather") || lower.includes("طقس")){
-      addMessage("Weather: 25°C Sunny, wind 15 km/h","ai");
-    } else if(lower.includes("wind") || lower.includes("رياح")){
-      addMessage("Wind power: 15 km/h","ai");
-    } else if(lower.includes("moujem") || lower.includes("معجم")){
-      addMessage("Salat Mu‘jam:\n• Fajr\n• Dhuhr\n• Asr\n• Maghrib\n• Isha","ai");
-    } else if(lower.includes("prayer") || lower.includes("أوقات")){
-      addMessage("Prayer times today: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
-    } else if(lower.includes("wudu") || lower.includes("وضوء")){
-      addMessage("Wudu steps: intention, wash hands, rinse mouth, inhale water, wash face, wash arms, wipe head, wash feet","ai");
-    } else {
-      addMessage("I didn’t understand, ask about prayer, Qibla, weather, wind, or wudu","ai");
-    }
-  }
-
-  sendBtn.onclick = ()=>{
-    const v = input.value.trim();
-    if(!v) return;
-    addMessage(v,"user");   // always show your message
-    input.value="";
-    respond(v);             // always force a reply
-  };
-
-  input.addEventListener('keydown', e=>{
-    if(e.key==="Enter"){ sendBtn.click(); }
-  });
-
-  // Initial greeting
-  addMessage("Hello this is NoorAI. here to help and assist you","ai");
-</script>
-<!-- NoorAI Widget -->
-<div id="noorai-widget"></div>
-
-<style>
-  #noorai-widget * { box-sizing: border-box; font-family: Inter, Arial, sans-serif; }
-  #noorai-panel {
-    position: fixed; right: 20px; bottom: 20px;
-    width: 400px; max-height: 70vh;
-    background: #111827; border-radius: 12px;
-    display: flex; flex-direction: column;
-    overflow: hidden; z-index: 99999; color: #e5e7eb;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-    animation: fadeIn 0.5s ease;
-  }
-  #noorai-header { padding: 10px; background: #1f2937; font-weight: bold; }
-  #noorai-messages { flex: 1; padding: 10px; overflow-y: auto; }
-  .msg { margin: 6px 0; opacity: 0; animation: fadeInMsg 0.4s forwards; }
-  .msg.user { text-align: right; color: #22c55e; }
-  .msg.ai { text-align: left; color: #60a5fa; }
-  #noorai-composer { display: flex; border-top: 1px solid #333; }
-  #noorai-input { flex: 1; border: none; padding: 10px; background: #1f2937; color: #e5e7eb; }
-  #noorai-send { background: #22c55e; border: none; color: white; padding: 10px 14px; cursor: pointer; }
-  .typing { color:#9ca3af; font-style: italic; animation: blink 1s infinite; }
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  @keyframes fadeInMsg { from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:translateY(0)} }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-</style>
-
-<script>
-  const mount = document.getElementById('noorai-widget');
-  mount.innerHTML = `
-    <div id="noorai-panel">
-      <div id="noorai-header">NoorAI — Salat Assistant</div>
-      <div id="noorai-messages"></div>
-      <div id="noorai-composer">
-        <input id="noorai-input" type="text" placeholder="Ask NoorAI…" />
-        <button id="noorai-send">Send</button>
-      </div>
-    </div>
-  `;
-
-  const msgs = document.getElementById('noorai-messages');
-  const input = document.getElementById('noorai-input');
-  const sendBtn = document.getElementById('noorai-send');
-
-  function addMessage(text, role){
-    const div = document.createElement('div');
-    div.className = 'msg ' + role;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function typingAnimation(){
-    const div = document.createElement('div');
-    div.className = 'msg ai typing';
-    div.textContent = "NoorAI is typing…";
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    return div;
-  }
-
-  function respond(text){
-    const lower = text.toLowerCase();
-    const typing = typingAnimation();
-    setTimeout(()=>{
-      typing.remove();
-      if(lower.includes("qibla") || lower.includes("قبلة")){
-        addMessage("🕋 Qibla is towards Mecca","ai");
-      } else if(lower.includes("weather") || lower.includes("طقس")){
-        addMessage("Weather: 25°C Sunny, wind 15 km/h","ai");
-      } else if(lower.includes("wind") || lower.includes("رياح")){
-        addMessage("Wind power: 15 km/h","ai");
-      } else if(lower.includes("moujem") || lower.includes("معجم")){
-        addMessage("Salat Mu‘jam: Fajr, Dhuhr, Asr, Maghrib, Isha","ai");
-      } else if(lower.includes("prayer") || lower.includes("أوقات")){
-        addMessage("Prayer times: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
-      } else if(lower.includes("wudu") || lower.includes("وضوء")){
-        addMessage("Wudu steps: intention, wash hands, rinse mouth, wash face, wash arms, wipe head, wash feet","ai");
-      } else {
-        addMessage("I didn’t understand, ask about prayer, Qibla, weather, wind, or wudu","ai");
-      }
-    }, 1000); // 1s typing delay
-  }
-
-  sendBtn.onclick = ()=>{
-    const v = input.value.trim();
-    if(!v) return;
-    addMessage(v,"user");
-    input.value="";
-    respond(v);
-  };
-
-  input.addEventListener('keydown', e=>{
-    if(e.key==="Enter"){ sendBtn.click(); }
-  });
-
-  addMessage("Hello this is NoorAI. here to help and assist you","ai");
 </script>
