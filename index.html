@@ -1,4 +1,3 @@
-alert("NoorAI script loaded!");
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -502,542 +501,551 @@ alert("NoorAI script loaded!");
 </html>
 <!DOCTYPE html>
 <html lang="en">
-  <!-- NoorAI Sidebar Widget: append-only -->
-<div id="noorai-sidebar-widget"></div>
-<style>
-  /* Scoped styles under #noorai-sidebar-widget to avoid conflicts */
-  #noorai-sidebar-widget * { box-sizing: border-box; font-family: Inter, system-ui, Segoe UI, Arial, sans-serif; }
-  #noorai-panel {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 420px;           /* thicker */
-    max-height: 80vh;       /* longer */
-    background: #111827;
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 16px;
-    overflow: hidden;
-    z-index: 99999;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    color: #e5e7eb;
-    animation: nb-fade 350ms ease both;
-  }
-  #noorai-header {
-    padding: 12px 14px; display: flex; align-items: center; gap: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.10);
-    background: rgba(17,24,39,0.90);
-  }
-  #noorai-logo {
-    width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
-    background: conic-gradient(from 210deg, #22c55e, #60a5fa, #22c55e);
-    box-shadow: 0 6px 16px rgba(34,197,94,0.35), 0 3px 12px rgba(96,165,250,0.25);
-  }
-  #noorai-title { font-weight: 700; font-size: 14.5px; }
-  #noorai-subtitle { color: #9ca3af; font-size: 12.5px; line-height: 1.35; }
-
-  #noorai-messages { padding: 10px; overflow-y: auto; scroll-behavior: smooth; }
-  .msg { display: flex; gap: 8px; margin: 8px 0; align-items: flex-end; animation: nb-rise 220ms ease both; }
-  .avatar { width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(180deg,#22c55e,#60a5fa); flex-shrink: 0; }
-  .msg.user .avatar { background: linear-gradient(180deg,#f59e0b,#ef4444); }
-  .bubble {
-    max-width: 78%; padding: 8px 10px; border-radius: 10px;
-    font-size: 13.5px; line-height: 1.45;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    white-space: pre-wrap;
-  }
-  .msg.user .bubble { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.28); }
-  .typing { display: inline-flex; gap: 4px; align-items: center; }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: #9ca3af; opacity: 0.6; animation: nb-blink 1.2s infinite; }
-  .dot:nth-child(2) { animation-delay: 0.2s; }
-  .dot:nth-child(3) { animation-delay: 0.4s; }
-  .rtl { direction: rtl; text-align: right; }
-
-  #noorai-composer {
-    padding: 10px; display: flex; gap: 8px; background: rgba(255,255,255,0.03);
-    border-top: 1px solid rgba(255,255,255,0.10);
-  }
-  #noorai-input {
-    flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #e5e7eb;
-    padding: 9px 10px; border-radius: 10px; outline: none; font-size: 13.5px;
-    transition: border 160ms ease, box-shadow 160ms ease;
-  }
-  #noorai-input:focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
-  #noorai-send {
-    background: linear-gradient(180deg,#22c55e,#16a34a);
-    color: white; border: none; padding: 9px 12px; border-radius: 10px;
-    font-weight: 600; cursor: pointer;
-    transition: transform 120ms ease, box-shadow 160ms ease, opacity 160ms ease;
-    box-shadow: 0 8px 20px rgba(34,197,94,0.35);
-  }
-  #noorai-send:hover { transform: translateY(-1px); }
-  #noorai-send:active { transform: translateY(1px); }
-
-  /* Weather consent popup */
-  #noorai-popup {
-    position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
-    background: rgba(0,0,0,0.45); z-index: 100000; animation: nb-fade 200ms ease both;
-  }
-  #noorai-popup.show { display: flex; }
-  #noorai-popup-card {
-    width: 92%; max-width: 380px; background: #111827;
-    border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.45); animation: nb-scale 220ms ease both;
-    color: #e5e7eb;
-  }
-  .popup-title { font-weight: 700; margin-bottom: 6px; }
-  .popup-text { color: #9ca3af; margin-bottom: 12px; font-size: 13.5px; }
-  .popup-actions { display: flex; gap: 8px; justify-content: flex-end; }
-  .btn { background: linear-gradient(180deg,#22c55e,#16a34a); color: white; border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer; }
-  .btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: #e5e7eb; }
-
-  /* Mobile: compact bottom bar (appears under other content visually) */
-  @media (max-width: 768px){
-    #noorai-panel{
-      right: 10px; left: 10px; width: auto;
-      bottom: 10px; max-height: 55vh;   /* smaller on phones */
-    }
-    #noorai-title{ font-size: 14px; }
-    #noorai-subtitle{ font-size: 12px; }
-  }
-
-  /* Animations */
-  @keyframes nb-blink { 0%,100% { opacity: 0.3 } 50% { opacity: 1 } }
-  @keyframes nb-fade { from { opacity: 0 } to { opacity: 1 } }
-  @keyframes nb-rise { from { opacity: 0; transform: translateY(4px) } to { opacity: 1; transform: translateY(0) } }
-  @keyframes nb-scale { from { opacity: 0; transform: scale(0.96) } to { opacity: 1; transform: scale(1) } }
-</style>
-
-<script>
-  // Append NoorAI at the very end
-  (function(){
-    const mount = document.getElementById('noorai-sidebar-widget');
-    mount.innerHTML = `
-      <div id="noorai-panel" role="region" aria-label="NoorAI assistant">
-        <div id="noorai-header">
-          <div id="noorai-logo" aria-hidden="true"></div>
-          <div>
-            <div id="noorai-title">NoorAI — Salat Assistant</div>
-            <div id="noorai-subtitle">Hello this is NoorAI. here to help and assist you<br>NoorAI هنا لمساعدتك في أي سؤال</div>
-          </div>
-        </div>
-        <div id="noorai-messages" aria-live="polite"></div>
-        <div id="noorai-composer">
-          <input id="noorai-input" type="text" placeholder="Ask NoorAI… اسأل نور…" />
-          <button id="noorai-send">Send</button>
-        </div>
-      </div>
-
-      <div id="noorai-popup" aria-modal="true" role="dialog">
-        <div id="noorai-popup-card">
-          <div class="popup-title">Weather permission</div>
-          <div class="popup-text">
-            NoorAI can tell current weather for your location. Do you want to allow this?
-            <br>سيساعدك NoorAI بعرض الطقس الحالي لموقعك. هل توافق؟
-          </div>
-          <div class="popup-actions">
-            <button class="btn secondary" id="noorai-deny">Not now</button>
-            <button class="btn" id="noorai-allow">Allow</button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Refs
-    const messagesEl = document.getElementById('noorai-messages');
-    const inputEl = document.getElementById('noorai-input');
-    const sendBtn = document.getElementById('noorai-send');
-    const popupEl = document.getElementById('noorai-popup');
-    const allowBtn = document.getElementById('noorai-allow');
-    const denyBtn  = document.getElementById('noorai-deny');
-
-    // Language detection
-    function isArabic(text){ return /[\u0600-\u06FF]/.test(text); }
-
-    // Moujem
-    const MOUJEM = {
-      en: {
-        Fajr: "Dawn prayer before sunrise; begins at true dawn.",
-        Dhuhr: "Noon prayer after the sun passes its zenith.",
-        Asr: "Afternoon prayer; time begins by shadow-length methods.",
-        Maghrib: "Sunset prayer immediately after sunset.",
-        Isha: "Night prayer beginning when twilight disappears.",
-        Taraweeh: "Ramadan night prayer after Isha.",
-        Witr: "Odd-numbered night prayer after Isha.",
-        Eid: "Festival prayer after sunrise on Eid.",
-        Janazah: "Funeral prayer for the deceased."
-      },
-      ar: {
-        "الفجر": "صلاة الفجر قبل الشروق؛ يبدأ وقتها عند الفجر الصادق.",
-        "الظهر": "صلاة الظهر بعد زوال الشمس عن منتصف السماء.",
-        "العصر": "صلاة العصر؛ يبدأ وقتها وفق طول الظل.",
-        "المغرب": "صلاة المغرب فور غروب الشمس.",
-        "العشاء": "صلاة العشاء بعد غياب الشفق.",
-        "التراويح": "صلاة نافلة في رمضان بعد العشاء.",
-        "الوتر": "صلاة ليلية بعدد فردي، غالبًا بعد العشاء.",
-        "العيد": "صلاة العيد بعد شروق الشمس.",
-        "الجنازة": "صلاة الجنازة على المتوفى."
-      }
-    };
-
-    // Strings
-    function t(key, lang){
-      const dict = {
-        typing_en: "Typing…",
-        typing_ar: "يكتب…",
-        unknown_en: "I didn’t understand. Ask about prayer times, Qibla, weather, or meanings.",
-        unknown_ar: "لم أفهم. اسأل عن أوقات الصلاة، القبلة، الطقس، أو المعاني.",
-        qibla_en: "🕋 The Qibla is towards Mecca (Kaaba). Face the direction your compass shows.",
-        qibla_ar: "🕋 القبلة نحو مكة (الكعبة). اتجه حسب البوصلة لديك.",
-        times_en: "Here are today’s prayer times (demo):",
-        times_ar: "هذه أوقات الصلاة اليوم (تجريبي):",
-        ask_weather_en: "Do you want me to check the weather?",
-        ask_weather_ar: "هل تريدني أن أتحقق من الطقس؟",
-        consent_need_en: "I need your permission to show weather.",
-        consent_need_ar: "أحتاج إذنك لعرض الطقس."
-      };
-      return dict[key + "_" + (lang === "ar" ? "ar" : "en")];
-    }
-
-    // UI helpers
-    function addMessage(content, role="ai", lang="en"){
-      const wrap = document.createElement('div');
-      wrap.className = 'msg ' + role;
-      if(lang === "ar") wrap.classList.add('rtl');
-
-      const avatar = document.createElement('div');
-      avatar.className = 'avatar';
-
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.textContent = content;
-
-      wrap.appendChild(avatar);
-      wrap.appendChild(bubble);
-      messagesEl.appendChild(wrap);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-
-    function addTyping(lang="en"){
-      const wrap = document.createElement('div');
-      wrap.className = 'msg ai';
-      if(lang === "ar") wrap.classList.add('rtl');
-
-      const avatar = document.createElement('div'); avatar.className = 'avatar';
-      const bubble = document.createElement('div'); bubble.className = 'bubble';
-      const typing = document.createElement('div');
-      typing.className = 'typing';
-      typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-
-      bubble.appendChild(typing);
-      wrap.appendChild(avatar);
-      wrap.appendChild(bubble);
-      messagesEl.appendChild(wrap);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      return wrap;
-    }
-
-    // Weather consent
-    let weatherConsent = null;
-    function askWeatherConsent(){
-      popupEl.classList.add('show');
-      return new Promise(resolve=>{
-        const allow = ()=>{ popupEl.classList.remove('show'); weatherConsent = true; resolve(true); };
-        const deny  = ()=>{ popupEl.classList.remove('show'); weatherConsent = false; resolve(false); };
-        allowBtn.onclick = allow; denyBtn.onclick = deny;
-      });
-    }
-
-    // Respond logic (bilingual + moujem + qibla + demo times + weather consent)
-    async function respond(userText){
-      const lang = isArabic(userText) ? "ar" : "en";
-      const typing = addTyping(lang);
-      await new Promise(r=>setTimeout(r, 350));
-      typing.remove();
-
-      const s = userText.trim().toLowerCase();
-
-      // Qibla
-      if(/(qibla|kaaba|mecca)/.test(s) || /(قبلة|الكعبة|مكة)/.test(s)){
-        addMessage(lang==="ar" ? t('qibla','ar') : t('qibla','en'), "ai", lang);
-        return;
-      }
-
-      // Weather + consent
-      if(/(weather|temperature|forecast)/.test(s) || /(طقس|جو|الطقس)/.test(s)){
-        if(weatherConsent === null){
-          addMessage(lang==="ar" ? t('consent_need','ar') : t('consent_need','en'), "ai", lang);
-          addMessage(lang==="ar" ? t('ask_weather','ar') : t('ask_weather','en'), "ai", lang);
-          const ok = await askWeatherConsent();
-          if(!ok){ addMessage(lang==="ar" ? "لن أعرض الطقس الآن." : "Okay, I won’t show weather now.", "ai", lang); return; }
-        }
-        addMessage(lang==="ar" ? "الطقس الآن: 25° مشمس (تجريبي)." : "Current weather: 25°C Sunny (demo).", "ai", lang);
-        return;
-      }
-
-      // Prayer times (demo list)
-      if(/(prayer|fajr|dhuhr|asr|maghrib|isha|times)/.test(s) || /(أوقات|الصلاة|الفجر|الظهر|العصر|المغرب|العشاء)/.test(s)){
-        const map = lang==="ar"
-          ? {Fajr:"الفجر", Dhuhr:"الظهر", Asr:"العصر", Maghrib:"المغرب", Isha:"العشاء"}
-          : {Fajr:"Fajr", Dhuhr:"Dhuhr", Asr:"Asr", Maghrib:"Maghrib", Isha:"Isha"};
-        const list = `${map.Fajr}: 05:00\n${map.Dhuhr}: 12:05\n${map.Asr}: 15:30\n${map.Maghrib}: 17:45\n${map.Isha}: 19:15`;
-        addMessage((lang==="ar" ? t('times','ar') : t('times','en')) + "\n" + list, "ai", lang);
-        return;
-      }
-
-      // Moujem full
-      if(/(moujem|mu.?jam|dictionary|meaning|ما هو|ما هي|تعريف|معنى|المعجم|مُعجم)/.test(s)){
-        const items = MOUJEM[lang==="ar" ? "ar" : "en"];
-        let txt = (lang==="ar" ? "مُعجم الصلاة:\n" : "Salat Mu‘jam:\n");
-        Object.keys(items).forEach(k => { txt += `• ${k}: ${items[k]}\n`; });
-        addMessage(txt.trim(), "ai", lang);
-        return;
-      }
-
-      // Term lookup (exact key)
-      const items = MOUJEM[lang==="ar" ? "ar" : "en"];
-      if(items[userText.trim()]){
-        addMessage(`• ${userText.trim()}: ${items[userText.trim()]}`, "ai", lang);
-        return;
-      }
-
-      // Fallback
-      addMessage(lang==="ar" ? t('unknown','ar') : t('unknown','en'), "ai", lang);
-    }
-
-    // Greetings
-    addMessage("Hello this is NoorAI. here to help and assist you", "ai", "en");
-    addMessage("NoorAI هنا لمساعدتك في أي سؤال", "ai", "ar");
-
-    // Send
-    function handleSend(){
-      const v = inputEl.value;
-      if(!v || !v.trim()) return;
-      const lang = isArabic(v) ? "ar" : "en";
-      addMessage(v.trim(), "user", lang);
-      inputEl.value = "";
-      respond(v);
-    }
-    sendBtn.addEventListener('click', handleSend);
-    inputEl.addEventListener('keydown', (e)=>{ if(e.key === "Enter") handleSend(); });
-  })();
-</script>
-<!-- NoorAI Sidebar Widget -->
-<div id="noorai-widget"></div>
-<style>
-  #noorai-widget * { box-sizing: border-box; font-family: Inter, Arial, sans-serif; }
-
-  /* Desktop: right-side bar */
-  #noorai-panel {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 460px;        /* thicker */
-    max-height: 85vh;    /* longer */
-    background: #111827;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    overflow: hidden;
-    z-index: 99999;
-    color: #e5e7eb;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-    animation: fadeIn 400ms ease both;
-  }
-
-  #noorai-header { padding: 12px; background: rgba(17,24,39,0.9); border-bottom: 1px solid rgba(255,255,255,0.1); }
-  #noorai-title { font-weight: bold; font-size: 15px; }
-  #noorai-subtitle { font-size: 13px; color: #9ca3af; line-height: 1.4; }
-
-  #noorai-messages { padding: 12px; overflow-y: auto; }
-  .msg { margin: 8px 0; }
-  .msg.user { text-align: right; color: #22c55e; }
-  .msg.ai { text-align: left; color: #60a5fa; }
-
-  #noorai-composer { display: flex; border-top: 1px solid rgba(255,255,255,0.1); }
-  #noorai-input { flex: 1; border: none; padding: 10px; background: rgba(255,255,255,0.05); color: #e5e7eb; }
-  #noorai-send { background: #22c55e; border: none; color: white; padding: 10px 14px; cursor: pointer; border-radius: 8px; }
-
-  /* Mobile: bottom bar */
-  @media (max-width: 768px){
-    #noorai-panel {
-      right: 10px; left: 10px;
-      width: auto;
-      bottom: 10px;
-      max-height: 60vh;   /* compact on phones */
-    }
-  }
-
-  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-</style>
-
-<script>
-  const mount = document.getElementById('noorai-widget');
-  mount.innerHTML = `
-    <div id="noorai-panel">
-      <div id="noorai-header">
-        <div id="noorai-title">NoorAI — Salat Assistant</div>
-        <div id="noorai-subtitle">Hello this is NoorAI. here to help and assist you<br>NoorAI هنا لمساعدتك في أي سؤال</div>
-      </div>
-      <div id="noorai-messages"></div>
-      <div id="noorai-composer">
-        <input id="noorai-input" type="text" placeholder="Ask NoorAI… اسأل نور…" />
-        <button id="noorai-send">Send</button>
-      </div>
-    </div>
-  `;
-
-  const msgs = document.getElementById('noorai-messages');
-  const input = document.getElementById('noorai-input');
-  const sendBtn = document.getElementById('noorai-send');
-
-  function isArabic(text){ return /[\u0600-\u06FF]/.test(text); }
-
-  const moujem = {
-    en: {Fajr:"Dawn prayer", Dhuhr:"Noon prayer", Asr:"Afternoon prayer", Maghrib:"Sunset prayer", Isha:"Night prayer"},
-    ar: {"الفجر":"صلاة الفجر","الظهر":"صلاة الظهر","العصر":"صلاة العصر","المغرب":"صلاة المغرب","العشاء":"صلاة العشاء"}
-  };
-
-  function addMessage(text, role){
-    const div = document.createElement('div');
-    div.className = 'msg ' + role;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function respond(text){
-    const lang = isArabic(text) ? "ar" : "en";
-    if(/qibla|قبلة/.test(text.toLowerCase())){
-      addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai");
-    } else if(/weather|طقس/.test(text.toLowerCase())){
-      addMessage(lang==="ar"?"الطقس الآن: 25° مشمس (تجريبي)":"Current weather: 25°C Sunny (demo)","ai");
-    } else if(/moujem|معجم|meaning|ما هو/.test(text.toLowerCase())){
-      const items = moujem[lang];
-      let out = (lang==="ar"?"مُعجم الصلاة:\n":"Salat Mu‘jam:\n");
-      for(const k in items){ out += "• "+k+": "+items[k]+"\n"; }
-      addMessage(out,"ai");
-    } else if(/prayer|أوقات/.test(text.toLowerCase())){
-      addMessage(lang==="ar"?"أوقات الصلاة اليوم: الفجر 05:00، الظهر 12:05، العصر 15:30، المغرب 17:45، العشاء 19:15":
-                           "Prayer times today: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
-    } else {
-      addMessage(lang==="ar"?"لم أفهم، اسأل عن الصلاة أو القبلة أو الطقس":"I didn’t understand, ask about prayer, Qibla, or weather","ai");
-    }
-  }
-
-  // Greetings
-  addMessage("Hello this is NoorAI. here to help and assist you","ai");
-  addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai");
-
-  sendBtn.onclick = ()=>{
-    const v = input.value.trim();
-    if(!v) return;
-    addMessage(v,"user");
-    input.value="";
-    respond(v);
-  };
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>NoorAI Widget</title>
+  <meta charset="UTF-8" />
+  <title>NoorAI — Salat Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: Arial, sans-serif; background:#f3f4f6; }
-    #noorai-panel {
-      position: fixed; right: 20px; bottom: 20px;
-      width: 400px; max-height: 70vh;
-      background: #111827; border-radius: 12px;
+    :root {
+      --bg: #0b1220;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-2: #60a5fa;
+      --border: #283141;
+      --shadow: rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background: var(--bg); color: var(--text); font-family: Inter, Arial, sans-serif; }
+
+    /* Top content so “London / US / Canada” are visible, NoorAI below */
+    .hero { padding: 28px 16px 8px; text-align: center; }
+    .hero h1 { margin: 0 0 8px; font-size: 24px; }
+    .hero p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .locations { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; padding: 18px 16px; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px;
+      box-shadow: 0 8px 20px var(--shadow);
+    }
+    .card h2 { margin:0 0 6px; font-size: 18px; }
+    .card p { margin:0; color: var(--muted); font-size: 14px; }
+    @media(max-width: 800px){ .locations { grid-template-columns: 1fr; } }
+
+    /* Bigger, responsive NoorAI box (placed below content) */
+    .noorai {
+      margin: 16px; margin-top: 8px;
+      width: calc(100% - 32px); max-width: 920px; height: 70vh;
       display: flex; flex-direction: column;
-      overflow: hidden; color: #e5e7eb;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      border-radius: 16px; overflow: hidden;
+      background: var(--panel); color: var(--text);
+      box-shadow: 0 18px 40px var(--shadow);
       animation: fadeIn 0.5s ease;
     }
-    #noorai-header { padding: 10px; background: #1f2937; font-weight: bold; }
-    #noorai-messages { flex: 1; padding: 10px; overflow-y: auto; }
-    .msg { margin: 6px 0; opacity: 0; animation: fadeInMsg 0.4s forwards; }
-    .msg.user { text-align: right; color: #22c55e; }
-    .msg.ai { text-align: left; color: #60a5fa; }
-    #noorai-composer { display: flex; border-top: 1px solid #333; }
-    #noorai-input { flex: 1; border: none; padding: 10px; background: #1f2937; color: #e5e7eb; }
-    #noorai-send { background: #22c55e; border: none; color: white; padding: 10px 14px; cursor: pointer; }
-    .typing { color:#9ca3af; font-style: italic; animation: blink 1s infinite; }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-    @keyframes fadeInMsg { from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:translateY(0)} }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .wrap { display:flex; flex-direction:column; height:100%; }
+    .header { display:flex; align-items:center; gap:12px; padding:14px; background: var(--panel-2); border-bottom: 1px solid var(--border); }
+    .logo { width:40px; height:40px; border-radius:50%; background:
+      radial-gradient(circle at 30% 30%, #22c55e 0, #22c55e 35%, #0ea5e9 36%, #0ea5e9 65%, #7c3aed 66%, #7c3aed 100%);
+      box-shadow: 0 0 20px rgba(34,197,94,0.5);
+    }
+    .title { font-weight: 700; letter-spacing: 0.2px; font-size: 18px; }
+    .subtitle { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    .chat { display:flex; flex-direction:column; height: 100%; }
+    .messages { flex:1; overflow-y:auto; padding:14px; }
+    .composer { display:flex; gap:8px; padding:12px; border-top:1px solid var(--border); background: var(--panel-2); }
+    .input {
+      flex:1; padding:12px; border-radius:10px; border:1px solid var(--border);
+      background:#0f172a; color: var(--text); outline:none; font-size: 15px;
+    }
+    .btn {
+      padding:12px 16px; border:none; border-radius:10px; cursor:pointer; font-weight:600;
+      background: var(--accent); color: #081219; transition: transform .05s ease, opacity .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.secondary { background:#334155; color: var(--text); }
+
+    /* Messages */
+    .msg { display:flex; gap:10px; margin:10px 0; align-items:flex-start; opacity:0; animation: msgIn .35s forwards; }
+    .msg.user { flex-direction: row-reverse; }
+    .avatar { width:28px; height:28px; border-radius:50%; background:#172554; box-shadow: inset 0 0 0 2px #1e293b; }
+    .msg.user .avatar { background:#133019; box-shadow: inset 0 0 0 2px #1b3d27; }
+    .bubble {
+      max-width: 78%; padding:11px 14px; border-radius:12px; line-height:1.5; white-space:pre-wrap;
+      background:#0f172a; border:1px solid var(--border); color:var(--text);
+    }
+    .msg.user .bubble { background:#052812; border-color:#144b2c; color:#c8f6d8; }
+    .msg.ai .bubble { background:#0a1a2e; border-color:#18324e; color:#cfe7ff; }
+
+    /* Typing indicator */
+    .typing { color: var(--muted); font-style: italic; }
+    .dots::after { content: "…"; animation: dots 1.2s infinite; }
+    @keyframes dots { 0% {content:""} 33% {content:"."} 66% {content:".."} 100% {content:"..."} }
+
+    /* Popup */
+    .popup {
+      position: fixed; inset:0; display:none; place-items:center; background: rgba(0,0,0,0.5);
+      z-index: 9999; backdrop-filter: blur(1px);
+    }
+    .popup.show { display:grid; animation: fadeIn .2s ease; }
+    .popup-card {
+      width: 90%; max-width: 520px; border-radius:14px; overflow:hidden; background: var(--panel);
+      border:1px solid var(--border); box-shadow: 0 14px 32px var(--shadow);
+    }
+    .popup-title { padding:12px; background: var(--panel-2); font-weight:700; border-bottom:1px solid var(--border); }
+    .popup-text { padding:12px; color: var(--text); font-size: 14px; }
+    .popup-actions { padding:12px; display:flex; gap:8px; justify-content:flex-end; }
+
+    /* RTL support */
+    .rtl { direction: rtl; text-align: right; }
+    .rtl .msg { flex-direction: row-reverse; }
+    .rtl .bubble { text-align: right; }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity:0; transform: translateY(4px);} to { opacity:1; transform: translateY(0);} }
+    @keyframes msgIn { from { opacity:0; transform: translateY(6px);} to { opacity:1; transform: translateY(0);} }
+
+    /* Mobile tweaks */
+    @media(max-width:640px){
+      .noorai { height: 78vh; }
+      .bubble { max-width: 85%; }
+    }
   </style>
 </head>
 <body>
-  <div id="noorai-panel">
-    <div id="noorai-header">NoorAI — Salat Assistant</div>
-    <div id="noorai-messages"></div>
-    <div id="noorai-composer">
-      <input id="noorai-input" type="text" placeholder="Ask NoorAI…" />
-      <button id="noorai-send">Send</button>
+
+  <!-- Top content: London / US / Canada -->
+  <div class="hero">
+    <h1>City highlights</h1>
+    <p>Below you’ll find NoorAI. Ask in English or Arabic, and see your messages and replies.</p>
+  </div>
+  <div class="locations">
+    <div class="card">
+      <h2>London</h2>
+      <p>Example content for London (visible at the top).</p>
+    </div>
+    <div class="card">
+      <h2>United States</h2>
+      <p>Example content for US (visible at the top).</p>
+    </div>
+    <div class="card">
+      <h2>Canada</h2>
+      <p>Example content for Canada (visible at the top).</p>
+    </div>
+  </div>
+
+  <!-- NoorAI Widget (placed below London / US / Canada) -->
+  <div class="noorai" id="noorai">
+    <div class="wrap">
+      <div class="header">
+        <div class="logo"></div>
+        <div>
+          <div class="title">NoorAI — Salat Assistant</div>
+          <div class="subtitle">Hello this is NoorAI. here to help and assist you<br>NoorAI هنا لمساعدتك في أي سؤال</div>
+        </div>
+      </div>
+      <div class="chat" id="chat">
+        <div class="messages" id="messages"></div>
+        <div class="composer">
+          <input id="input" class="input" type="text" placeholder="Ask NoorAI… اسأل نور…" />
+          <button id="send" class="btn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather permission popup -->
+    <div class="popup" id="popup">
+      <div class="popup-card">
+        <div class="popup-title">Weather permission</div>
+        <div class="popup-text">
+          NoorAI can tell current weather (demo) for a city or your location. Do you want to allow this?<br>
+          يمكن لـ NoorAI عرض الطقس (نموذج) لمدينة أو لموقعك. هل توافق؟
+        </div>
+        <div class="popup-actions">
+          <button class="btn secondary" id="deny">Not now</button>
+          <button class="btn" id="allow">Allow</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    const msgs = document.getElementById('noorai-messages');
-    const input = document.getElementById('noorai-input');
-    const sendBtn = document.getElementById('noorai-send');
+  document.addEventListener("DOMContentLoaded", () => {
+    // Language detection
+    function isArabic(text){ return /[\u0600-\u06FF]/.test(text); }
 
-    function addMessage(text, role){
-      const div = document.createElement('div');
-      div.className = 'msg ' + role;
-      div.textContent = text;
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
-    }
-
-    function typingAnimation(){
-      const div = document.createElement('div');
-      div.className = 'msg ai typing';
-      div.textContent = "NoorAI is typing…";
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
-      return div;
-    }
-
-    function respond(text){
-      const lower = text.toLowerCase();
-      const typing = typingAnimation();
-      setTimeout(()=>{
-        typing.remove();
-        if(lower.includes("qibla") || lower.includes("قبلة")){
-          addMessage("🕋 Qibla is towards Mecca","ai");
-        } else if(lower.includes("weather") || lower.includes("طقس")){
-          addMessage("Weather: 25°C Sunny, wind 15 km/h","ai");
-        } else if(lower.includes("wind") || lower.includes("رياح")){
-          addMessage("Wind power: 15 km/h","ai");
-        } else if(lower.includes("moujem") || lower.includes("معجم")){
-          addMessage("Salat Mu‘jam: Fajr, Dhuhr, Asr, Maghrib, Isha","ai");
-        } else if(lower.includes("prayer") || lower.includes("أوقات")){
-          addMessage("Prayer times: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai");
-        } else if(lower.includes("wudu") || lower.includes("وضوء")){
-          addMessage("Wudu steps: intention, wash hands, rinse mouth, wash face, wash arms, wipe head, wash feet","ai");
-        } else {
-          addMessage("I didn’t understand, ask about prayer, Qibla, weather, wind, or wudu","ai");
-        }
-      }, 1000);
-    }
-
-    sendBtn.onclick = ()=>{
-      const v = input.value.trim();
-      if(!v) return;
-      addMessage(v,"user");
-      input.value="";
-      respond(v);
+    // Demo prayer times and weather maps (extendable)
+    const DEMO_PRAYER_TIMES = {
+      en: {
+        Riyadh: {Fajr:"05:06", Dhuhr:"12:01", Asr:"15:12", Maghrib:"17:21", Isha:"18:47"},
+        Mecca:  {Fajr:"05:12", Dhuhr:"12:09", Asr:"15:22", Maghrib:"17:32", Isha:"18:58"},
+        London: {Fajr:"06:15", Dhuhr:"12:03", Asr:"14:14", Maghrib:"16:01", Isha:"17:35"},
+        Cairo:  {Fajr:"05:06", Dhuhr:"11:49", Asr:"14:50", Maghrib:"16:58", Isha:"18:18"},
+        Toronto:{Fajr:"06:20", Dhuhr:"12:21", Asr:"14:49", Maghrib:"16:43", Isha:"18:05"},
+        NewYork:{Fajr:"06:18", Dhuhr:"12:14", Asr:"14:42", Maghrib:"16:35", Isha:"17:58"}
+      },
+      ar: {
+        الرياض: {"الفجر":"05:06","الظهر":"12:01","العصر":"15:12","المغرب":"17:21","العشاء":"18:47"},
+        مكة:    {"الفجر":"05:12","الظهر":"12:09","العصر":"15:22","المغرب":"17:32","العشاء":"18:58"},
+        لندن:   {"الفجر":"06:15","الظهر":"12:03","العصر":"14:14","المغرب":"16:01","العشاء":"17:35"},
+        القاهرة:{"الفجر":"05:06","الظهر":"11:49","العصر":"14:50","المغرب":"16:58","العشاء":"18:18"},
+        تورونتو:{"الفجر":"06:20","الظهر":"12:21","العصر":"14:49","المغرب":"16:43","العشاء":"18:05"},
+        نيويورك:{"الفجر":"06:18","الظهر":"12:14","العصر":"14:42","المغرب":"16:35","العشاء":"17:58"}
+      }
     };
 
-    input.addEventListener('keydown', e=>{
-      if(e.key==="Enter"){ sendBtn.click(); }
-    });
+    const DEMO_WEATHER = {
+      en: {
+        Riyadh: "25°C, Sunny, wind 12 km/h",
+        Mecca:  "26°C, Clear, wind 10 km/h",
+        London: "8°C, Light rain, wind 20 km/h",
+        Cairo:  "22°C, Sunny intervals, wind 14 km/h",
+        Toronto:"-1°C, Cloudy, wind 18 km/h",
+        NewYork:"3°C, Breezy, wind 22 km/h",
+        Vancouver:"5°C, Showers, wind 16 km/h",
+        Ottawa:"-2°C, Snow flurries, wind 12 km/h"
+      },
+      ar: {
+        الرياض: "٢٥° مشمس، رياح ١٢ كم/س",
+        مكة:    "٢٦° صافٍ، رياح ١٠ كم/س",
+        لندن:   "٨° مطر خفيف، رياح ٢٠ كم/س",
+        القاهرة:"٢٢° مشمس جزئياً، رياح ١٤ كم/س",
+        تورونتو:"-١° غائم، رياح ١٨ كم/س",
+        نيويورك:"٣° نسيم، رياح ٢٢ كم/س",
+        فانكوفر:"٥° زخات مطر، رياح ١٦ كم/س",
+        أوتاوا:"-٢° نُدف ثلج، رياح ١٢ كم/س"
+      }
+    };
 
-    addMessage("Hello this is NoorAI. here to help and assist you","ai");
+    // Moujem dictionary
+    const MOUJEM = {
+      en: {Fajr:"Dawn prayer", Dhuhr:"Noon prayer", Asr:"Afternoon prayer", Maghrib:"Sunset prayer", Isha:"Night prayer"},
+      ar: {"الفجر":"صلاة الفجر قبل الشروق","الظهر":"صلاة الظهر بعد الزوال","العصر":"صلاة العصر","المغرب":"صلاة المغرب عند الغروب","العشاء":"صلاة العشاء بعد غياب الشفق"}
+    };
+
+    // How to pray (simplified general steps)
+    const HOW_TO_PRAY = {
+      en: [
+        "Intention (niyyah).",
+        "Takbeer (Allahu Akbar).",
+        "Recite Al-Fatiha and a surah.",
+        "Ruku’ (bow) then stand.",
+        "Sujood (prostration) twice.",
+        "Tashahhud and salam at the end."
+      ],
+      ar: [
+        "النية.",
+        "تكبيرة الإحرام (الله أكبر).",
+        "قراءة الفاتحة وسورة.",
+        "الركوع ثم القيام.",
+        "السجود مرتين.",
+        "التشهد والسلام في النهاية."
+      ]
+    };
+
+    // Janazah prayer (simplified)
+    const HOW_TO_PRAY_JANAZAH = {
+      en: [
+        "Intention for Janazah prayer.",
+        "First Takbeer: Al-Fatiha.",
+        "Second Takbeer: Salat upon the Prophet.",
+        "Third Takbeer: Dua for the deceased.",
+        "Fourth Takbeer: brief dua, then salam."
+      ],
+      ar: [
+        "النية لصلاة الجنازة.",
+        "التكبيرة الأولى: قراءة الفاتحة.",
+        "التكبيرة الثانية: الصلاة على النبي ﷺ.",
+        "التكبيرة الثالثة: الدعاء للميت.",
+        "التكبيرة الرابعة: دعاء خفيف ثم السلام."
+      ]
+    };
+
+    // Elements
+    const messagesEl = document.getElementById("messages");
+    const inputEl = document.getElementById("input");
+    const sendBtn = document.getElementById("send");
+    const popupEl = document.getElementById("popup");
+    const allowBtn = document.getElementById("allow");
+    const denyBtn = document.getElementById("deny");
+
+    // Helpers
+    function addMessage(content, role="ai", lang="en"){
+      const wrap=document.createElement('div');wrap.className="msg "+role; if(lang==="ar")wrap.classList.add("rtl");
+      const avatar=document.createElement('div');avatar.className="avatar";
+      const bubble=document.createElement('div');bubble.className="bubble";bubble.textContent=content;
+      wrap.appendChild(avatar);wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop=messagesEl.scrollHeight;
+    }
+
+    function showTyping(lang){
+      const wrap=document.createElement('div');wrap.className="msg ai"; if(lang==="ar") wrap.classList.add("rtl");
+      const avatar=document.createElement('div');avatar.className="avatar";
+      const bubble=document.createElement('div');bubble.className="bubble typing dots";bubble.textContent=(lang==="ar"?"نور يكتب":"NoorAI is typing");
+      wrap.appendChild(avatar);wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop=messagesEl.scrollHeight;
+      return wrap;
+    }
+
+    function parseCity(text, lang){
+      const words = text.trim().split(/\s+/);
+      if(lang==="ar"){
+        for(let i=words.length-1;i>=0;i--){
+          if(/[\u0600-\u06FF]/.test(words[i])) return words[i].replace(/[^\u0600-\u06FF]/g,"");
+        }
+      } else {
+        for(let i=words.length-1;i>=0;i--){
+          const w=words[i].replace(/[^A-Za-z]/g,"");
+          if(w && /^[A-Z][a-zA-Z]+$/.test(w)) return w;
+        }
+      }
+      return null;
+    }
+
+    function formatPrayerTimes(times, lang){
+      if(!times) return lang==="ar" ? "لا تتوفر أوقات الصلاة لهذه المدينة (نموذج)." : "Prayer times not available for this city (demo).";
+      if(lang==="ar"){
+        const t=times; return `أوقات الصلاة:\n• الفجر: ${t["الفجر"]}\n• الظهر: ${t["الظهر"]}\n• العصر: ${t["العصر"]}\n• المغرب: ${t["المغرب"]}\n• العشاء: ${t["العشاء"]}`;
+      } else {
+        const t=times; return `Prayer times:\n• Fajr: ${t.Fajr}\n• Dhuhr: ${t.Dhuhr}\n• Asr: ${t.Asr}\n• Maghrib: ${t.Maghrib}\n• Isha: ${t.Isha}`;
+      }
+    }
+
+    // Respond logic (forced reply)
+    async function respond(userText){
+      const lang=isArabic(userText)?"ar":"en";
+      const typing=showTyping(lang);
+      const lower=userText.toLowerCase();
+
+      setTimeout(()=>{
+        typing.remove();
+
+        // Qibla
+        if(/qibla|قبلة/.test(lower)){
+          addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai",lang);
+          return;
+        }
+
+        // Weather (with permission popup)
+        if(/weather|طقس|جو/.test(lower)){
+          popupEl.classList.add("show");
+          allowBtn.onclick=()=>{
+            popupEl.classList.remove("show");
+            const city=parseCity(userText, lang);
+            if(city){
+              const data = DEMO_WEATHER[lang][city];
+              addMessage(
+                data ? (lang==="ar" ? `الطقس في ${city}: ${data}` : `Weather in ${city}: ${data}`)
+                    : (lang==="ar" ? `الطقس في ${city}: بيانات نموذجية غير متوفرة` : `Weather in ${city}: demo data not available`),
+                "ai", lang
+              );
+            } else {
+              addMessage(lang==="ar"?"الطقس الحالي: ٢٥° مشمس، رياح ١٢ كم/س (نموذج)":"Current weather: 25°C, Sunny, wind 12 km/h (demo)","ai",lang);
+            }
+          };
+          denyBtn.onclick=()=>{
+            popupEl.classList.remove("show");
+            addMessage(lang==="ar"?"حسناً، لن أفعّل الطقس الآن":"Okay, I won’t enable weather now","ai",lang);
+          };
+          return;
+        }
+
+        // Prayer times: detect "prayer times" + city
+        if(/prayer|أوقات|الصلاة/.test(lower)){
+          const city = parseCity(userText, lang);
+          if(city){
+            const times = DEMO_PRAYER_TIMES[lang][city];
+            addMessage(formatPrayerTimes(times, lang),"ai",lang);
+          } else {
+            addMessage(lang==="ar"?"اذكر اسم المدينة للحصول على أوقات الصلاة (مثال: أوقات الصلاة الرياض)":"Say the city to get times (e.g., prayer times Riyadh)","ai",lang);
+          }
+          return;
+        }
+
+        // Moujem / meanings
+        if(/moujem|معجم|meaning|ما هو|تعريف/.test(lower)){
+          const items=MOUJEM[lang];
+          let txt=(lang==="ar"?"مُعجم الصلاة:\n":"Salat Mu‘jam:\n");
+          Object.keys(items).forEach(k=>{ txt += `• ${k}: ${items[k]}\n`; });
+          addMessage(txt,"ai",lang);
+          return;
+        }
+
+        // How to pray
+        if(/how to pray|كيفية الصلاة|كيف أصلي|طريقة الصلاة/.test(lower)){
+          const steps = HOW_TO_PRAY[lang];
+          addMessage((lang==="ar"?"خطوات الصلاة:\n":"Steps to pray:\n") + steps.map(s=>"• "+s).join("\n"),"ai",lang);
+          return;
+        }
+
+        // Janazah
+        if(/janazah|الجنازة|صلاة الجنازة/.test(lower)){
+          const steps = HOW_TO_PRAY_JANAZAH[lang];
+          addMessage((lang==="ar"?"خطوات صلاة الجنازة:\n":"Janazah prayer steps:\n") + steps.map(s=>"• "+s).join("\n"),"ai",lang);
+          return;
+        }
+
+        // Fallback
+        addMessage(
+          lang==="ar"
+            ? "لم أفهم. يمكنك أن تسأل عن: القبلة، الطقس، أوقات الصلاة، مُعجم الصلاة، كيفية الصلاة، أو صلاة الجنازة."
+            : "I didn’t understand. You can ask about: Qibla, weather, prayer times, Mu‘jam, how to pray, or Janazah.",
+          "ai", lang
+        );
+      }, 850);
+    }
+
+    // Initial greetings
+    addMessage("Hello this is NoorAI. here to help and assist you","ai","en");
+    addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai","ar");
+
+    // Send handler (forced show + reply)
+    sendBtn.onclick=()=>{
+      const v=inputEl.value;
+      if(!v.trim()) return;
+      const lang=isArabic(v)?"ar":"en";
+      addMessage(v.trim(),"user",lang);
+      inputEl.value="";
+      respond(v);
+    };
+    inputEl.addEventListener("keydown", (e)=>{
+      if(e.key==="Enter") sendBtn.click();
+    });
+  });
   </script>
 </body>
 </html>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  function isArabic(text){ return /[\u0600-\u06FF]/.test(text); }
+  const messagesEl=document.getElementById("messages");
+  const inputEl=document.getElementById("input");
+  const sendBtn=document.getElementById("send");
+
+  function addMessage(content, role="ai", lang="en"){
+    const div=document.createElement("div");
+    div.className="msg "+role;
+    const bubble=document.createElement("div");
+    bubble.className="bubble";
+    bubble.textContent=content;
+    div.appendChild(bubble);
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop=messagesEl.scrollHeight;
+  }
+
+  function respond(userText){
+    const lang=isArabic(userText)?"ar":"en";
+    const lower=userText.toLowerCase();
+    if(/qibla|قبلة/.test(lower)){ addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai",lang); return; }
+    if(/weather|طقس/.test(lower)){ addMessage(lang==="ar"?"الطقس الحالي: ٢٥° مشمس":"Current weather: 25°C Sunny","ai",lang); return; }
+    if(/prayer|أوقات/.test(lower)){ addMessage(lang==="ar"?"أوقات الصلاة: الفجر 05:00، الظهر 12:05، العصر 15:30، المغرب 17:45، العشاء 19:15":"Prayer times: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai",lang); return; }
+    if(/moujem|معجم/.test(lower)){ addMessage(lang==="ar"?"مُعجم الصلاة: الفجر، الظهر، العصر، المغرب، العشاء":"Salat Mu‘jam: Fajr, Dhuhr, Asr, Maghrib, Isha","ai",lang); return; }
+    if(/how to pray|كيفية الصلاة/.test(lower)){ addMessage(lang==="ar"?"خطوات الصلاة: النية، تكبيرة الإحرام، قراءة الفاتحة، الركوع، السجود، التشهد، السلام":"Steps to pray: Intention, Takbeer, Fatiha, Ruku’, Sujood, Tashahhud, Salam","ai",lang); return; }
+    if(/janazah|الجنازة/.test(lower)){ addMessage(lang==="ar"?"خطوات صلاة الجنازة: النية، التكبيرات الأربع، الدعاء، السلام":"Janazah prayer steps: Intention, 4 Takbeers, Dua, Salam","ai",lang); return; }
+    addMessage(lang==="ar"?"لم أفهم، اسأل عن الصلاة أو القبلة أو الطقس":"I didn’t understand, ask about prayer, Qibla, or weather","ai",lang);
+  }
+
+  function handleSend(){
+    const v=inputEl.value;
+    if(!v.trim()) return;
+    const lang=isArabic(v)?"ar":"en";
+    addMessage(v.trim(),"user",lang);
+    inputEl.value="";
+    respond(v);
+  }
+
+  sendBtn.onclick=handleSend;
+  inputEl.addEventListener("keydown", e=>{ if(e.key==="Enter") handleSend(); });
+
+  // Initial greeting
+  addMessage("Hello this is NoorAI. here to help and assist you","ai","en");
+  addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai","ar");
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  function isArabic(text){ return /[\u0600-\u06FF]/.test(text); }
+  const messagesEl=document.getElementById("messages");
+  const inputEl=document.getElementById("input");
+  const sendBtn=document.getElementById("send");
+
+  function addMessage(content, role="ai", lang="en"){
+    const div=document.createElement("div");
+    div.className="msg "+role;
+    const bubble=document.createElement("div");
+    bubble.className="bubble";
+    bubble.textContent=content;
+    div.appendChild(bubble);
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop=messagesEl.scrollHeight;
+  }
+
+  function respond(userText){
+    const lang=isArabic(userText)?"ar":"en";
+    const lower=userText.toLowerCase();
+
+    if(/qibla|قبلة/.test(lower)){ addMessage(lang==="ar"?"🕋 القبلة نحو مكة":"🕋 The Qibla is towards Mecca","ai",lang); return; }
+    if(/weather|طقس/.test(lower)){ addMessage(lang==="ar"?"الطقس الحالي: ٢٥° مشمس":"Current weather: 25°C Sunny","ai",lang); return; }
+    if(/prayer|أوقات/.test(lower)){ addMessage(lang==="ar"?"أوقات الصلاة: الفجر 05:00، الظهر 12:05، العصر 15:30، المغرب 17:45، العشاء 19:15":"Prayer times: Fajr 05:00, Dhuhr 12:05, Asr 15:30, Maghrib 17:45, Isha 19:15","ai",lang); return; }
+    if(/moujem|معجم/.test(lower)){ addMessage(lang==="ar"?"مُعجم الصلاة: الفجر، الظهر، العصر، المغرب، العشاء":"Salat Mu‘jam: Fajr, Dhuhr, Asr, Maghrib, Isha","ai",lang); return; }
+    if(/how to pray|كيفية الصلاة/.test(lower)){ addMessage(lang==="ar"?"خطوات الصلاة: النية، تكبيرة الإحرام، قراءة الفاتحة، الركوع، السجود، التشهد، السلام":"Steps to pray: Intention, Takbeer, Fatiha, Ruku’, Sujood, Tashahhud, Salam","ai",lang); return; }
+    if(/janazah|الجنازة/.test(lower)){ addMessage(lang==="ar"?"خطوات صلاة الجنازة: النية، التكبيرات الأربع، الدعاء، السلام":"Janazah prayer steps: Intention, 4 Takbeers, Dua, Salam","ai",lang); return; }
+
+    // Always reply something so the conversation never stops
+    addMessage(lang==="ar"?"لم أفهم، اسأل عن الصلاة أو القبلة أو الطقس":"I didn’t understand, ask about prayer, Qibla, or weather","ai",lang);
+  }
+
+  function handleSend(){
+    const v=inputEl.value;
+    if(!v.trim()) return;
+    const lang=isArabic(v)?"ar":"en";
+    addMessage(v.trim(),"user",lang);
+    inputEl.value="";
+    respond(v);
+  }
+
+  // Endless loop: every click or Enter triggers handleSend
+  sendBtn.onclick=handleSend;
+  inputEl.addEventListener("keydown", e=>{ if(e.key==="Enter") handleSend(); });
+
+  // Initial greeting
+  addMessage("Hello this is NoorAI. here to help and assist you","ai","en");
+  addMessage("NoorAI هنا لمساعدتك في أي سؤال","ai","ar");
+});
+</script>
+<!-- Chat UI (minimal structure) -->
+<div id="messages" style="height:300px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:8px;"></div>
+<div style="display:flex; gap:8px; margin-top:8px;">
+  <input id="input" type="text" placeholder="Type here… اكتب هنا…" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ccc;">
+  <button id="send" style="padding:10px 14px; border:none; border-radius:8px; background:#22c55e; color:#0b1220; font-weight:600;">Send</button>
+</div>
+
+<script>
+// Make messages container smoothly scroll
+const messagesEl = document.getElementById('messages');
+messagesEl.style.scrollBehavior = 'smooth';
+
+function isArabic(text){ return /[\u0600-\u06FF]/.test(text); }
+
+function addMessage(content, role = 'ai', lang = 'en'){
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.style.margin = '6px 0';
+  div.style.textAlign = role === 'user' ? 'right' : 'left';
+  const bubble = document.createElement('div');
+  bubble.textContent = content;
+  bubble.style.display = 'inline-block';
+  bubble.style.padding = '8px 12px';
+  bubble.style.borderRadius = '10px';
+  bubble.style.background = role === 'user' ? '#052812' : '#0a1a2e';
+  bubble.style.color = role === 'user' ? '#c8f6d8' : '#cfe7ff';
+  bubble.style.border = '1px solid ' + (role === 'user' ? '#144b2c' : '#18324e');
+  if(lang === 'ar'){ bubble.style.direction = 'rtl'; bubble.style.textAlign = 'right'; }
+  div.appendChild(bubble);
+  messagesEl.appendChild(div);
