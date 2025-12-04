@@ -19,20 +19,17 @@
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Noto Naskh Arabic",Tahoma,Arial,sans-serif}
     a{color:var(--green);text-decoration:none}
-    
-    /* Header */
+
     header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid #eee;z-index:50}
     .topbar{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px}
     .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--green)}
     .logo-mark{width:34px;height:34px;border-radius:50%;background:conic-gradient(from 0deg,var(--green),var(--yellow),var(--green));box-shadow:var(--shadow)}
     .tagline{color:var(--muted);font-size:13px}
 
-    /* Layout */
     main{max-width:1100px;margin:0 auto;padding:18px 16px}
     .grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
 
-    /* Cards & UI */
     .card{background:var(--card);border:1px solid #eee;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;animation:fadeIn 600ms ease both}
     .card h3{margin:0 0 8px;font-size:18px;color:var(--text)}
     .card p{margin:6px 0;color:var(--muted);font-size:14px}
@@ -42,7 +39,6 @@
     .btn-primary:hover{filter:brightness(1.06)}
     .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(15,157,88,0.12);color:var(--green);font-weight:600;font-size:12px}
 
-    /* Panels */
     .panel{position:fixed;inset:0;background:rgba(20,33,61,0.08);display:none;align-items:center;justify-content:center;padding:10px;z-index:100}
     .panel.active{display:flex;animation:fadeIn 200ms ease both}
     .panel-card{width:min(760px,95vw);background:#fff;border-radius:18px;border:1px solid #eee;box-shadow:var(--shadow);overflow:hidden}
@@ -50,7 +46,6 @@
     .panel-title{font-size:18px;font-weight:800;color:var(--text)}
     .corner-arrow{position:absolute;top:10px;left:10px;padding:8px 12px;border-radius:999px;background:rgba(244,197,66,0.18);color:#7a5b00;border:1px dashed #e6b84d;cursor:pointer;font-weight:700}
 
-    /* Salat grid */
     .salat-grid{display:grid;grid-template-columns:1fr;gap:10px}
     @media(min-width:540px){.salat-grid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:900px){.salat-grid{grid-template-columns:repeat(3,1fr)}}
@@ -58,7 +53,6 @@
     .salat h4{margin:0 0 4px;color:var(--green);font-size:16px}
     .salat time{font-weight:700;color:#222;font-size:15px}
 
-    /* Qibla compass */
     .qibla-wrap{display:grid;grid-template-columns:1fr;gap:14px}
     @media(min-width:900px){.qibla-wrap{grid-template-columns:360px 1fr}}
     .compass{aspect-ratio:1/1;border-radius:50%;border:8px solid var(--green);position:relative;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%, #fff, #f9f9f9)}
@@ -66,24 +60,21 @@
     .needle{position:absolute;width:6px;height:40%;background:var(--yellow);top:10%;transform-origin:50% 90%;border-radius:999px;box-shadow:0 0 0 2px rgba(244,197,66,0.3)}
     .kaaba{position:absolute;bottom:18px;display:flex;align-items:center;gap:8px;font-size:22px;color:#111;background:#fff;padding:6px 10px;border-radius:999px;border:1px solid #eee}
 
-    /* Quran */
     .quran-list{max-height:320px;overflow:auto;border:1px solid #eee;border-radius:12px}
     .surah{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f3f3f3;cursor:pointer}
     .surah:last-child{border-bottom:none}
     .surah:hover{background:#fafafa}
     .surah-num{font-weight:700;color:var(--green)}
 
-    /* Blockquote */
     blockquote{margin:0;padding:12px 14px;border-right:4px solid var(--green);background:#fafafa;border-radius:10px}
 
-    /* Animations */
     @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
     .fade{animation:fadeIn 600ms ease both}
   </style>
 </head>
+
 <body>
 
-  <!-- Header -->
   <header>
     <div class="topbar">
       <div class="logo">
@@ -95,59 +86,68 @@
   </header>
 
   <main>
-    <!-- Intro -->
+
     <div class="card fade">
       <h3>البلدان — ودجات مواقيت الصلاة</h3>
-      <p>اختر البلد لرؤية المواقيت كاملة مع حركة انتقال سلسة. استخدم زر الرجوع للعودة دون تحديث الصفحة.</p>
+      <p>اختر البلد لرؤية المواقيت كاملة مع حركة انتقال سلسة.</p>
     </div>
 
-    <!-- Country Widgets -->
     <section class="grid" id="countryGrid"></section>
 
-    <!-- Qibla -->
     <section class="card fade" style="margin-top:18px">
       <h3>اتجاه القبلة — بوصلة متقدمة</h3>
       <p>اسمح للموقع بالوصول إلى الموقع واتجاه الجهاز ليظهر السهم نحو الكعبة 🕋.</p>
+
       <div class="qibla-wrap">
         <div class="compass">
           <div class="north">شمال</div>
           <div class="needle" id="needle"></div>
           <div class="kaaba">🕋 الكعبة</div>
         </div>
+
         <div>
-          <p><span class="chip">الحالة:</span> <span id="geoStatus">بانتظار الإذن بالموقع…</span></p>
+          <p><span class="chip">الحالة:</span> <span id="geoStatus">بانتظار الإذن…</span></p>
           <p><strong>الزاوية نحو مكة:</strong> <span id="bearing">—°</span></p>
           <p><strong>اتجاه الجهاز:</strong> <span id="deviceHeading">—°</span></p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-            <button class="btn" id="reqGeo">طلب الموقع</button>
-            <button class="btn" id="reqOrient">تفعيل اتجاه الجهاز</button>
-            <button class="btn btn-primary" id="resetCompass">إعادة معايرة</button>
-          </div>
-          <p style="color:var(--muted);margin-top:10px">تلميح: تأكد من اتصال آمن (https)، وحرك هاتفك قليلاً على شكل رقم 8 لتحسين المعايرة.</p>
         </div>
       </div>
     </section>
 
-    <!-- Hadith -->
     <section class="card fade" style="margin-top:18px">
       <h3>أحاديث نبوية</h3>
-      <blockquote>«إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى…» — متفق عليه</blockquote>
-      <blockquote style="margin-top:10px">«الدين النصيحة.» — رواه مسلم</blockquote>
+      <blockquote>«إنما الأعمال بالنيات…»</blockquote>
+      <blockquote style="margin-top:10px">«الدين النصيحة.»</blockquote>
     </section>
 
-    <!-- Quran -->
     <section class="card fade" style="margin-top:18px">
       <h3>القرآن الكريم — جميع السور</h3>
-      <p>افتح أي سورة لعرضها (عرض تجريبي — أضف النص الكامل لاحقًا).</p>
+
+      <!-- YOUR LINK ADDED -->
+      <p>
+        <a href="https://albrhe1466-dotcom.github.io/Quran_alkareem/" target="_blank">
+          القرآن الكريم — اضغط هنا للانتقال
+        </a>
+      </p>
+
       <div class="quran-list" id="quranList"></div>
-      <!-- Surah Panel -->
+
       <div id="surahPanel" class="panel" aria-hidden="true">
         <div class="panel-card">
           <div class="panel-head">
             <button class="corner-arrow" id="closeSurah">رجوع</button>
             <div class="panel-title" id="surahTitle">سورة</div>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="surahContent"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
+
             <div id="surahContent" style="border:1px solid #eee;border-radius:12px;padding:12px;background:#fff">
               <p style="color:var(--muted)">… محتوى السورة هنا …</p>
             </div>
@@ -298,56 +298,385 @@
       }
     }
 
-    reqGeo.addEventListener('click', requestGeo);
-    reqOrient.addEventListener('click', requestOrientation);
-    resetCompass.addEventListener('click', ()=>{ offset = 0; updateNeedle(); });
-
-    // Quran list (114 Surahs)
-    const surahNames = [
-      "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
-      "هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
-      "الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
-      "لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
-      "فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
-      "الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
-      "الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
-      "نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
-      "التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
-      "الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
-      "القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
-      "المسد","الإخلاص","الفلق","الناس"
-    ];
-    const quranList = document.getElementById('quranList');
-    const surahPanel = document.getElementById('surahPanel');
-    const surahTitle = document.getElementById('surahTitle');
-    const surahContent = document.getElementById('surahContent');
-    const closeSurah = document.getElementById('closeSurah');
-
-    function renderQuran(){
-      quranList.innerHTML = '';
-      surahNames.forEach((name, i)=>{
-        const row = document.createElement('div');
-        row.className = 'surah';
-        row.innerHTML = `<span>${name}</span><span class="surah-num">[${i+1}]</span>`;
-        row.addEventListener('click', ()=>{
-          surahTitle.textContent = `سورة ${name}`;
-          surahContent.innerHTML = `
-            <p style="margin:0 0 10px 0;color:${'var(--muted)'}">عرض تجريبي — أضف نص السورة الكامل لاحقًا.</p>
-            <p><strong>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</strong></p>
-            <p>… محتوى السورة ${name} …</p>
-          `;
-          surahPanel.classList.add('active');
-          surahPanel.setAttribute('aria-hidden','false');
-        });
-        quranList.appendChild(row);
-      });
+    <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NoorAI • قارئ القرآن</title>
+  <style>
+    :root {
+      --bg: #0e0f12;
+      --panel: #14161b;
+      --border: #20222a;
+      --text: #eaeaea;
+      --muted: #a7b0bf;
+      --gold: #c9a66b;
+      --accent: #2ecc71;
     }
-    closeSurah.addEventListener('click', ()=>{
-      surahPanel.classList.remove('active');
-      surahPanel.setAttribute('aria-hidden','true');
-    });
-    renderQuran();
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: "Amiri","Scheherazade",serif; }
+    header { padding: 16px; background: #0f1115; border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 700; color: var(--gold); }
+    .hint { color: var(--muted); font-size: 14px; margin-top: 6px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
 
+    /* Accordion blocks */
+    .surah { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--panel); }
+    .surah-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; cursor: pointer; transition: background .25s ease;
+    }
+    .surah-header:hover { background: #191c22; }
+    .names { display: flex; align-items: center; gap: 12px; }
+    .num-pill { background: #0f1115; border: 1px solid var(--border); color: var(--gold); padding: 4px 8px; border-radius: 999px; font-weight: 700; min-width: 32px; text-align: center; }
+    .name-group { display: flex; flex-direction: column; }
+    .name-ar { font-weight: 700; }
+    .name-en { color: var(--muted); font-size: 14px; }
+    .actions { display: flex; align-items: center; gap: 10px; }
+    .link { color: var(--muted); font-size: 14px; text-decoration: none; border: 1px solid var(--border); padding: 6px 10px; border-radius: 8px; }
+    .link:hover { background: #191c22; color: var(--text); }
+    .arrow { font-size: 16px; transition: transform .25s ease; }
+    .arrow.down { transform: rotate(90deg); }
+
+    .surah-body {
+      max-height: 0; overflow: hidden; background: #0f1115;
+      transition: max-height .5s ease, padding .25s ease;
+      padding: 0 16px;
+      position: relative;
+    }
+    .surah-body.open { max-height: 1000px; padding: 16px; }
+    .mushaf-bg {
+      position: absolute; inset: 0; background: url('mushaf.jpg') center/cover no-repeat; opacity: 0.08; pointer-events: none;
+    }
+    .ayat { position: relative; display: grid; gap: 8px; }
+    .ayah {
+      padding: 8px 10px; border-radius: 10px; background: #12141a; line-height: 2.2; font-size: 20px;
+      transition: background .2s ease, box-shadow .2s ease;
+    }
+    .ayah:hover { background: #141a1f; box-shadow: 0 0 0 1px #1f2832 inset; }
+    .num { color: var(--gold); font-size: 13px; margin-inline-start: 8px; }
+
+    /* Change Surah panel styles */
+    .switch { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--panel); }
+    .switch-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; }
+    .switch-header:hover { background: #191c22; }
+    .switch-body { background: #0f1115; padding: 16px; }
+    .row-flex { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .label { color: var(--gold); }
+    .select {
+      padding: 8px; border-radius: 8px; border: 1px solid var(--border);
+      background: #111319; color: var(--text); min-width: 260px;
+    }
+    .status { color: var(--muted); font-size: 14px; }
+    .error { color: #ffb3b3; font-size: 14px; }
+
+    @media (max-width: 720px) {
+      .container { padding: 12px; }
+      .surah-body.open { max-height: 1400px; }
+      .name-en { font-size: 13px; }
+      .ayah { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">NoorAI • قارئ القرآن</div>
+    <div class="hint">اضغط على اسم السورة لعرض آياتها، أو استخدم تغيير السورة لاختيار أي سورة فورًا.</div>
+  </header>
+
+  <div class="container">
+    <!-- Change Surah panel (opens by default and shows Al‑Fātiḥah) -->
+    <div class="switch" id="switch">
+      <div class="switch-header" id="switchHeader">
+        <div class="names">
+          <div class="num-pill">★</div>
+          <div class="name-group">
+            <div class="name-ar">تغيير السورة</div>
+            <div class="name-en">Change Surah</div>
+          </div>
+        </div>
+        <div class="arrow down" id="switchArrow">▶</div>
+      </div>
+      <div class="switch-body" id="switchBody">
+        <div class="row-flex">
+          <label class="label" for="surahSelect">اختر سورة:</label>
+          <select class="select" id="surahSelect"></select>
+          <span class="status" id="switchStatus">تم تحميل سورة الفاتحة افتراضيًا.</span>
+        </div>
+        <div class="surah-body open" style="padding:0; border-radius: 10px; margin-top: 12px;">
+          <div class="mushaf-bg"></div>
+          <div class="ayat" id="switchAyat"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accordion list for all surahs -->
+    <div class="row" id="surahList"></div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // Names 1..114 (Arabic + English)
+      var SURAH_NAMES = [
+        ["الفاتحة","The Opening"],["البقرة","The Cow"],["آل عمران","The Family of Imran"],["النساء","The Women"],
+        ["المائدة","The Table Spread"],["الأنعام","The Cattle"],["الأعراف","The Heights"],["الأنفال","The Spoils of War"],
+        ["التوبة","The Repentance"],["يونس","Jonah"],["هود","Hud"],["يوسف","Joseph"],["الرعد","The Thunder"],
+        ["إبراهيم","Abraham"],["الحجر","The Rocky Tract"],["النحل","The Bee"],["الإسراء","The Night Journey"],["الكهف","The Cave"],
+        ["مريم","Mary"],["طه","Ta-Ha"],["الأنبياء","The Prophets"],["الحج","The Pilgrimage"],["المؤمنون","The Believers"],
+        ["النور","The Light"],["الفرقان","The Criterion"],["الشعراء","The Poets"],["النمل","The Ant"],
+        ["القصص","The Stories"],["العنكبوت","The Spider"],["الروم","The Romans"],["لقمان","Luqman"],
+        ["السجدة","The Prostration"],["الأحزاب","The Confederates"],["سبأ","Sheba"],["فاطر","The Originator"],
+        ["يس","Ya-Sin"],["الصافات","Those Ranged in Rows"],["ص","Sad"],["الزمر","The Groups"],["غافر","The Forgiver"],
+        ["فصلت","Explained in Detail"],["الشورى","The Consultation"],["الزخرف","The Gold Adornments"],["الدخان","The Smoke"],
+        ["الجاثية","The Crouching"],["الأحقاف","The Wind-Curved Sandhills"],["محمد","Muhammad"],["الفتح","The Victory"],
+        ["الحجرات","The Rooms"],["ق","Qaf"],["الذاريات","The Winnowing Winds"],["الطور","The Mount"],
+        ["النجم","The Star"],["القمر","The Moon"],["الرحمن","The Beneficent"],["الواقعة","The Inevitable"],
+        ["الحديد","The Iron"],["المجادلة","The Pleading Woman"],["الحشر","The Exile"],["الممتحنة","The Examined One"],
+        ["الصف","The Ranks"],["الجمعة","The Congregation"],["المنافقون","The Hypocrites"],["التغابن","The Mutual Disillusion"],
+        ["الطلاق","The Divorce"],["التحريم","The Prohibition"],["الملك","The Sovereignty"],["القلم","The Pen"],
+        ["الحاقة","The Reality"],["المعارج","The Ascending Stairways"],["نوح","Noah"],["الجن","The Jinn"],
+        ["المزمل","The Enshrouded One"],["المدثر","The Cloaked One"],["القيامة","The Resurrection"],["الإنسان","Man"],
+        ["المرسلات","The Emissaries"],["النبأ","The Tidings"],["النازعات","Those Who Drag Forth"],["عبس","He Frowned"],
+        ["التكوير","The Overthrowing"],["الإنفطار","The Splitting"],["المطففين","Defrauding"],["الإنشقاق","The Splitting Open"],
+        ["البروج","The Mansions of the Stars"],["الطارق","The Morning Star"],["الأعلى","The Most High"],["الغاشية","The Overwhelming"],
+        ["الفجر","The Dawn"],["البلد","The City"],["الشمس","The Sun"],["الليل","The Night"],
+        ["الضحى","The Morning Hours"],["الشرح","The Relief"],["التين","The Fig"],["العلق","The Clot"],
+        ["القدر","The Power"],["البينة","The Clear Proof"],["الزلزلة","The Earthquake"],["العاديات","The Courser"],
+        ["القارعة","The Calamity"],["التكاثر","Rivalry in World Increase"],["العصر","The Declining Day"],["الهمزة","The Slanderer"],
+        ["الفيل","The Elephant"],["قريش","Quraysh"],["الماعون","Small Kindnesses"],["الكوثر","Abundance"],
+        ["الكافرون","The Disbelievers"],["النصر","The Divine Support"],["المسد","The Palm Fiber"],["الإخلاص","Sincerity"],
+        ["الفلق","The Daybreak"],["الناس","Mankind"]
+      ];
+
+      // DOM refs
+      var surahList = document.getElementById('surahList');
+      var switchHeader = document.getElementById('switchHeader');
+      var switchArrow = document.getElementById('switchArrow');
+      var switchBody = document.getElementById('switchBody');
+      var switchStatus = document.getElementById('switchStatus');
+      var switchAyat = document.getElementById('switchAyat');
+      var surahSelect = document.getElementById('surahSelect');
+
+      // Build select options
+      var frag = document.createDocumentFragment();
+      var placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = '-- اختر --';
+      frag.appendChild(placeholder);
+      for (var i = 0; i < SURAH_NAMES.length; i++) {
+        var opt = document.createElement('option');
+        opt.value = String(i + 1);
+        opt.textContent = (i + 1) + ' — ' + SURAH_NAMES[i][0] + ' — ' + SURAH_NAMES[i][1];
+        frag.appendChild(opt);
+      }
+      surahSelect.appendChild(frag);
+
+      // Toggle switch panel open/close
+      switchHeader.addEventListener('click', function() {
+        var isOpen = switchBody.classList.toggle('open');
+        if (isOpen) { switchArrow.classList.add('down'); } else { switchArrow.classList.remove('down'); }
+      });
+
+      // Fetch ayat utility
+      function fetchAyat(num, targetEl, statusEl) {
+        if (statusEl) { statusEl.textContent = 'جاري التحميل…'; }
+        return fetch('https://api.alquran.cloud/v1/surah/' + num + '/ar.quran-uthmani', { mode: 'cors' })
+          .then(function(res) {
+            if (!res.ok) throw new Error('Network error');
+            return res.json();
+          })
+          .then(function(json) {
+            var ayahs = (json && json.data && json.data.ayahs) ? json.data.ayahs : [];
+            var html = '';
+            for (var j = 0; j < ayahs.length; j++) {
+              var a = ayahs[j];
+              html += '<div class="ayah">' + a.text + ' <span class="num">(' + a.numberInSurah + ')</span></div>';
+            }
+            targetEl.innerHTML = html;
+            if (statusEl) {
+              var idx = parseInt(num, 10) - 1;
+              statusEl.textContent = 'تم التحميل: ' + SURAH_NAMES[idx][0] + ' — ' + SURAH_NAMES[idx][1];
+            }
+          })
+          .catch(function() {
+            targetEl.innerHTML = '<div class="error">تعذّر تحميل السورة. تأكد من الاتصال وفتح الصفحة عبر HTTPS.</div>';
+            if (statusEl) statusEl.textContent = 'حدث خطأ أثناء التحميل.';
+          });
+      }
+
+      // Default: load Al‑Fātiḥah into switch panel
+      surahSelect.value = '1';
+      fetchAyat('1', switchAyat, switchStatus);
+
+      // Change surah instantly on selection
+      surahSelect.addEventListener('change', function() {
+        var val = surahSelect.value;
+        if (!val) { switchAyat.innerHTML = ''; switchStatus.textContent = 'اختر سورة.'; return; }
+        fetchAyat(val, switchAyat, switchStatus);
+      });
+
+      // Build accordion list for all surahs
+      for (var k = 0; k < SURAH_NAMES.length; k++) {
+        (function(idx) {
+          var num = idx + 1;
+          var ar = SURAH_NAMES[idx][0];
+          var en = SURAH_NAMES[idx][1];
+
+          var wrap = document.createElement('div');
+          wrap.className = 'surah';
+
+          var header = document.createElement('div');
+          header.className = 'surah-header';
+          header.innerHTML =
+            '<div class="names">' +
+              '<div class="num-pill">' + num + '</div>' +
+              '<div class="name-group">' +
+                '<div class="name-ar">' + ar + '</div>' +
+                '<div class="name-en">' + en + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="actions">' +
+              '<a class="link" href="reader.html?surah=' + num + '" target="_blank" rel="noopener">افتح صفحة السورة</a>' +
+              '<div class="arrow">▶</div>' +
+            '</div>';
+
+          var body = document.createElement('div');
+          body.className = 'surah-body';
+          var bg = document.createElement('div');
+          bg.className = 'mushaf-bg';
+          var ayat = document.createElement('div');
+          ayat.className = 'ayat';
+          ayat.innerHTML = '<div class="status">جاري التحميل عند الفتح…</div>';
+          body.appendChild(bg);
+          body.appendChild(ayat);
+
+          // Toggle open/close + fetch once
+          var loaded = false;
+          header.addEventListener('click', function(e) {
+            // If user clicked the deep link, don’t toggle accordion
+            var tag = e.target.tagName.toLowerCase();
+            if (tag === 'a') return;
+
+            body.classList.toggle('open');
+            var arr = header.querySelector('.arrow');
+            arr.classList.toggle('down', body.classList.contains('open'));
+
+            if (body.classList.contains('open') && !loaded) {
+              fetchAyat(String(num), ayat, null).then(function() { loaded = true; });
+            }
+          });
+
+          wrap.appendChild(header);
+          wrap.appendChild(body);
+          surahList.appendChild(wrap);
+        })(k);
+      }
+    })();
+  </script>
+</body>
+</html>
+<style>
+  /* Make opened surah panels scrollable */
+  .surah-body.open {
+    overflow-y: auto;
+    max-height: 70vh;         /* enough height to invite scrolling */
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  }
+
+  /* Also apply to the Change Surah preview body if you're using it */
+  #switchBody .surah-body.open {
+    overflow-y: auto;
+    max-height: 70vh;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Firefox thin scrollbar */
+  .surah-body.open {
+    scrollbar-width: thin;                 /* thin bar */
+    scrollbar-color: #3b4150 #0f1115;      /* thumb color | track color */
+  }
+
+  /* WebKit (Chrome, Edge, Safari) scrollbar */
+  .surah-body.open::-webkit-scrollbar {
+    width: 8px;                            /* thin bar width */
+  }
+  .surah-body.open::-webkit-scrollbar-track {
+    background: #0f1115;                   /* track behind the thumb */
+  }
+  .surah-body.open::-webkit-scrollbar-thumb {
+    background: #3b4150;                   /* thumb color */
+    border-radius: 12px;
+    border: 2px solid #0f1115;             /* creates a nice inset effect */
+  }
+  .surah-body.open::-webkit-scrollbar-thumb:hover {
+    background: #4a5162;
+  }
+</style>
+
+<script>
+  // Optional: ensure any already-open panels get the correct max-height on load
+  (function(){
+    'use strict';
+    var opened = document.querySelectorAll('.surah-body.open');
+    for (var i = 0; i < opened.length; i++) {
+      // Force a reflow-safe max-height if needed
+      opened[i].style.maxHeight = opened[i].style.maxHeight || '70vh';
+    }
+  })();
+</script>
+<style>
+  /* Make opened surah panels scrollable */
+  .surah-body.open {
+    overflow-y: auto;
+    max-height: 70vh;         /* enough height to invite scrolling */
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  }
+
+  /* Also apply to the Change Surah preview body if you're using it */
+  #switchBody .surah-body.open {
+    overflow-y: auto;
+    max-height: 70vh;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Firefox thin scrollbar */
+  .surah-body.open {
+    scrollbar-width: thin;                 /* thin bar */
+    scrollbar-color: #3b4150 #0f1115;      /* thumb color | track color */
+  }
+
+  /* WebKit (Chrome, Edge, Safari) scrollbar */
+  .surah-body.open::-webkit-scrollbar {
+    width: 8px;                            /* thin bar width */
+  }
+  .surah-body.open::-webkit-scrollbar-track {
+    background: #0f1115;                   /* track behind the thumb */
+  }
+  .surah-body.open::-webkit-scrollbar-thumb {
+    background: #3b4150;                   /* thumb color */
+    border-radius: 12px;
+    border: 2px solid #0f1115;             /* creates a nice inset effect */
+  }
+  .surah-body.open::-webkit-scrollbar-thumb:hover {
+    background: #4a5162;
+  }
+</style>
+
+<script>
+  // Optional: ensure any already-open panels get the correct max-height on load
+  (function(){
+    'use strict';
+    var opened = document.querySelectorAll('.surah-body.open');
+    for (var i = 0; i < opened.length; i++) {
+      // Force a reflow-safe max-height if needed
+      opened[i].style.maxHeight = opened[i].style.maxHeight || '70vh';
+    }
+  })();
+</script>
     // Accessibility: close panels on Escape
     window.addEventListener('keydown', (e)=>{
       if(e.key === 'Escape'){
@@ -1048,4 +1377,115 @@ function addMessage(content, role = 'ai', lang = 'en'){
   bubble.style.border = '1px solid ' + (role === 'user' ? '#144b2c' : '#18324e');
   if(lang === 'ar'){ bubble.style.direction = 'rtl'; bubble.style.textAlign = 'right'; }
   div.appendChild(bubble);
-  messagesEl.appendChild(div);
+  <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NoorAI • قارئ القرآن</title>
+  <style>
+    :root {
+      --bg: #0e0f12;
+      --panel: #14161b;
+      --border: #20222a;
+      --text: #eaeaea;
+      --muted: #a7b0bf;
+      --gold: #c9a66b;
+      --accent: #2ecc71;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: "Amiri","Scheherazade",serif; }
+    header { padding: 16px; background: #0f1115; border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 700; color: var(--gold); }
+    .hint { color: var(--muted); font-size: 14px; margin-top: 6px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
+
+    /* Accordion blocks */
+    .surah { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--panel); }
+    .surah-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; cursor: pointer; transition: background .25s ease;
+    }
+    .surah-header:hover { background: #191c22; }
+    .names { display: flex; align-items: center; gap: 12px; }
+    .num-pill { background: #0f1115; border: 1px solid var(--border); color: var(--gold); padding: 4px 8px; border-radius: 999px; font-weight: 700; min-width: 32px; text-align: center; }
+    .name-group { display: flex; flex-direction: column; }
+    .name-ar { font-weight: 700; }
+    .name-en { color: var(--muted); font-size: 14px; }
+    .actions { display: flex; align-items: center; gap: 10px; }
+    .link { color: var(--muted); font-size: 14px; text-decoration: none; border: 1px solid var(--border); padding: 6px 10px; border-radius: 8px; }
+    .link:hover { background: #191c22; color: var(--text); }
+    .arrow { font-size: 16px; transition: transform .25s ease; }
+    .arrow.down { transform: rotate(90deg); }
+
+    .surah-body {
+      max-height: 0; overflow: hidden; background: #0f1115;
+      transition: max-height .5s ease, padding .25s ease;
+      padding: 0 16px;
+      position: relative;
+    }
+    .surah-body.open { max-height: 1000px; padding: 16px; }
+    .mushaf-bg {
+      position: absolute; inset: 0; background: url('mushaf.jpg') center/cover no-repeat; opacity: 0.08; pointer-events: none;
+    }
+    .ayat { position: relative; display: grid; gap: 8px; }
+    .ayah {
+      padding: 8px 10px; border-radius: 10px; background: #12141a; line-height: 2.2; font-size: 20px;
+      transition: background .2s ease, box-shadow .2s ease;
+    }
+    .ayah:hover { background: #141a1f; box-shadow: 0 0 0 1px #1f2832 inset; }
+    .num { color: var(--gold); font-size: 13px; margin-inline-start: 8px; }
+
+    /* Change Surah panel styles */
+    .switch { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--panel); }
+    .switch-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; }
+    .switch-header:hover { background: #191c22; }
+    .switch-body { background: #0f1115; padding: 16px; }
+    .row-flex { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .label { color: var(--gold); }
+    .select {
+      padding: 8px; border-radius: 8px; border: 1px solid var(--border);
+      background: #111319; color: var(--text); min-width: 260px;
+    }
+    .status { color: var(--muted); font-size: 14px; }
+    .error { color: #ffb3b3; font-size: 14px; }
+
+    @media (max-width: 720px) {
+      .container { padding: 12px; }
+      .surah-body.open { max-height: 1400px; }
+      .name-en { font-size: 13px; }
+      .ayah { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quran Link</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 40px;
+      padding: 50px;
+      text-align: center;
+    }
+    a {
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    CLICK THIS LINK ↓<br><br>
+    <a href="https://albrhe1466-dotcom.github.io/Quran_alkareem/" target="_blank">
+      https://albrhe1466-dotcom.github.io/Quran_alkareem/
+    </a>
+  </div>
+
+</body>
+</html>
