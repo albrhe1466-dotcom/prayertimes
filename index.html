@@ -1,4 +1,152 @@
 <!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Prayertimes</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .section-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #006400; /* Dark green */
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .widget {
+      border: 2px solid #0000FF; /* Blue border */
+      border-radius: 8px;
+      padding: 12px;
+      margin: 10px auto;
+      background-color: #fff;
+      width: 280px;
+      animation: fadeIn 1s ease-in;
+    }
+    .country-title {
+      color: #008000; /* Green title */
+      font-size: 20px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .prayer-times {
+      padding: 0;
+      margin: 0;
+      text-align: center; /* Center the list */
+    }
+    .prayer-times li {
+      color: #000000; /* Black text */
+      font-size: 16px;
+      list-style: none;
+      margin: 4px 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="section-title">الدول الإسلامية</div>
+  <div class="container">
+    <div class="widget">
+      <h2 class="country-title">قطر</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 4:30</li>
+        <li>الظهر: 11:45</li>
+        <li>العصر: 3:15</li>
+        <li>المغرب: 5:30</li>
+        <li>العشاء: 7:00</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h2 class="country-title">السعودية</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 4:25</li>
+        <li>الظهر: 11:50</li>
+        <li>العصر: 3:20</li>
+        <li>المغرب: 5:35</li>
+        <li>العشاء: 7:05</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h2 class="country-title">المغرب</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 5:10</li>
+        <li>الظهر: 12:30</li>
+        <li>العصر: 3:45</li>
+        <li>المغرب: 6:00</li>
+        <li>العشاء: 7:30</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h2 class="country-title">مصر</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 4:50</li>
+        <li>الظهر: 12:00</li>
+        <li>العصر: 3:30</li>
+        <li>المغرب: 5:45</li>
+        <li>العشاء: 7:15</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h2 class="country-title">الإمارات</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 4:35</li>
+        <li>الظهر: 11:55</li>
+        <li>العصر: 3:25</li>
+        <li>المغرب: 5:40</li>
+        <li>العشاء: 7:10</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h2 class="country-title">عمان</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 4:40</li>
+        <li>الظهر: 12:05</li>
+        <li>العصر: 3:35</li>
+        <li>المغرب: 5:50</li>
+        <li>العشاء: 7:20</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h2 class="country-title">اليمن</h2>
+      <ul class="prayer-times">
+        <li>الفجر: 4:45</li>
+        <li>الظهر: 12:10</li>
+        <li>العصر: 3:40</li>
+        <li>المغرب: 5:55</li>
+        <li>العشاء: 7:25</li>
+        <li>🕋 اتجاه القبلة</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>
+<!-- test rebuild -->
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -73,8 +221,140 @@
   </style>
 </head>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analog Clock with Numbers</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .clock-container {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+
+    .clock {
+      width: 220px;
+      height: 220px;
+      border: 8px solid #0000FF; /* Blue border */
+      border-radius: 50%;
+      position: relative;
+      background: #fff;
+    }
+
+    .center {
+      width: 12px;
+      height: 12px;
+      background: #000;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .hand {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 50%; /* anchor at center */
+      transform: rotate(90deg);
+    }
+
+    .hour {
+      width: 60px;
+      height: 4px;
+      background: #008000; /* Green hour hand */
+      z-index: 3;
+    }
+
+    .minute {
+      width: 80px;
+      height: 3px;
+      background: #000; /* Black minute hand */
+      z-index: 2;
+    }
+
+    .second {
+      width: 90px;
+      height: 2px;
+      background: red; /* Red second hand */
+      z-index: 1;
+    }
+
+    /* Numbers around the clock */
+    .number {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      color: #000;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
 <body>
 
+  <div class="clock-container">
+    <div class="clock">
+      <div class="center"></div>
+      <div class="hand hour" id="hour"></div>
+      <div class="hand minute" id="minute"></div>
+      <div class="hand second" id="second"></div>
+
+      <!-- Numbers 1 to 12 -->
+      <div class="number" style="transform: rotate(30deg) translate(90px) rotate(-30deg);">1</div>
+      <div class="number" style="transform: rotate(60deg) translate(90px) rotate(-60deg);">2</div>
+      <div class="number" style="transform: rotate(90deg) translate(90px) rotate(-90deg);">3</div>
+      <div class="number" style="transform: rotate(120deg) translate(90px) rotate(-120deg);">4</div>
+      <div class="number" style="transform: rotate(150deg) translate(90px) rotate(-150deg);">5</div>
+      <div class="number" style="transform: rotate(180deg) translate(90px) rotate(-180deg);">6</div>
+      <div class="number" style="transform: rotate(210deg) translate(90px) rotate(-210deg);">7</div>
+      <div class="number" style="transform: rotate(240deg) translate(90px) rotate(-240deg);">8</div>
+      <div class="number" style="transform: rotate(270deg) translate(90px) rotate(-270deg);">9</div>
+      <div class="number" style="transform: rotate(300deg) translate(90px) rotate(-300deg);">10</div>
+      <div class="number" style="transform: rotate(330deg) translate(90px) rotate(-330deg);">11</div>
+      <div class="number" style="transform: rotate(0deg) translate(90px) rotate(0deg);">12</div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
+
+      const secondDeg = ((seconds / 60) * 360) + 90;
+      const minuteDeg = ((minutes / 60) * 360) + ((seconds/60)*6) + 90;
+      const hourDeg = ((hours / 12) * 360) + ((minutes/60)*30) + 90;
+
+      document.getElementById('second').style.transform = `rotate(${secondDeg}deg)`;
+      document.getElementById('minute').style.transform = `rotate(${minuteDeg}deg)`;
+      document.getElementById('hour').style.transform = `rotate(${hourDeg}deg)`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+
+</body>
+</html>
+
+</body>
+</html>
   <header>
     <div class="topbar">
       <div class="logo">
@@ -147,244 +427,7 @@
 
 </body>
 </html>
-
-            <div id="surahContent" style="border:1px solid #eee;border-radius:12px;padding:12px;background:#fff">
-              <p style="color:var(--muted)">… محتوى السورة هنا …</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Country Panel -->
-  <div id="countryPanel" class="panel" aria-hidden="true">
-    <div class="panel-card">
-      <div class="panel-head">
-        <button class="corner-arrow" id="closePanel" aria-label="رجوع إلى الودجات">رجوع</button>
-        <div class="panel-title" id="countryTitle">مواقيت الصلاة — البلد</div>
-      </div>
-      <div class="panel-body">
-        <div class="salat-grid" id="salatGrid"></div>
-        <p style="color:var(--muted);margin-top:10px">المواقيت هنا توضيحية. اربط لاحقًا بواجهة برمجة (API) لحساب المواقيت حسب الموقع داخل البلد.</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Fade on page load
-    document.addEventListener('DOMContentLoaded', ()=> document.body.classList.add('fade'));
-
-    // Countries & placeholder prayer times
-    const countries = [
-      { id:'sa', name:'السعودية', note:'مكة/الرياض', times:{ الفجر:'04:50', الظهر:'11:50', العصر:'15:10', المغرب:'17:35', العشاء:'19:05' } },
-      { id:'ma', name:'المغرب', note:'الرباط/الدار البيضاء', times:{ الفجر:'05:40', الظهر:'12:34', العصر:'15:45', المغرب:'17:30', العشاء:'19:00' } },
-      { id:'ae', name:'الإمارات', note:'أبوظبي/دبي', times:{ الفجر:'05:10', الظهر:'12:07', العصر:'15:25', المغرب:'17:34', العشاء:'19:04' } },
-      { id:'kw', name:'الكويت', note:'مدينة الكويت', times:{ الفجر:'05:12', الظهر:'11:52', العصر:'15:00', المغرب:'17:18', العشاء:'18:48' } },
-      { id:'om', name:'عُمان', note:'مسقط', times:{ الفجر:'05:05', الظهر:'12:05', العصر:'15:25', المغرب:'17:33', العشاء:'19:03' } },
-      { id:'bh', name:'البحرين', note:'المنامة', times:{ الفجر:'05:12', الظهر:'11:52', العصر:'15:02', المغرب:'17:19', العشاء:'18:49' } },
-      { id:'qa', name:'قطر', note:'الدوحة', times:{ الفجر:'05:09', الظهر:'11:49', العصر:'15:00', المغرب:'17:17', العشاء:'18:47' } },
-    ];
-
-    const grid = document.getElementById('countryGrid');
-    const countryPanel = document.getElementById('countryPanel');
-    const countryTitle = document.getElementById('countryTitle');
-    const salatGrid = document.getElementById('salatGrid');
-    const closePanel = document.getElementById('closePanel');
-
-    function renderCountries(){
-      grid.innerHTML = '';
-      countries.forEach(c=>{
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <h3>${c.name}</h3>
-          <p><span class="chip">ملاحظة:</span> ${c.note}</p>
-          <div style="display:flex;gap:10px;margin-top:8px">
-            <button class="btn btn-primary" data-id="${c.id}">عرض المواقيت</button>
-          </div>
-        `;
-        card.querySelector('button').addEventListener('click', ()=> openCountry(c));
-        grid.appendChild(card);
-      });
-    }
-
-    function openCountry(country){
-      countryTitle.textContent = `مواقيت الصلاة — ${country.name}`;
-      salatGrid.innerHTML = '';
-      const order = ['الفجر','الظهر','العصر','المغرب','العشاء'];
-      order.forEach(name=>{
-        const time = country.times[name] || '—:—';
-        const div = document.createElement('div');
-        div.className = 'salat';
-        div.innerHTML = `<h4>${name}</h4><time>${time}</time>`;
-        salatGrid.appendChild(div);
-      });
-      countryPanel.classList.add('active');
-      countryPanel.setAttribute('aria-hidden','false');
-    }
-
-    closePanel.addEventListener('click', ()=>{
-      countryPanel.classList.remove('active');
-      countryPanel.setAttribute('aria-hidden','true');
-    });
-
-    renderCountries();
-
-    // Qibla Compass
-    const KAABA = { lat:21.4225, lon:39.8262 }; // Masjid al-Haram
-    const needle = document.getElementById('needle');
-    const bearingEl = document.getElementById('bearing');
-    const deviceHeadingEl = document.getElementById('deviceHeading');
-    const geoStatus = document.getElementById('geoStatus');
-    const reqGeo = document.getElementById('reqGeo');
-    const reqOrient = document.getElementById('reqOrient');
-    const resetCompass = document.getElementById('resetCompass');
-
-    let userPos = null;
-    let bearingToKaaba = null;
-    let deviceHeading = null;
-    let offset = 0;
-
-    const toRad = d => d*Math.PI/180;
-    const toDeg = r => r*180/Math.PI;
-
-    function calcBearing(lat1,lon1,lat2,lon2){
-      const φ1 = toRad(lat1), φ2 = toRad(lat2);
-      const Δλ = toRad(lon2 - lon1);
-      const y = Math.sin(Δλ)*Math.cos(φ2);
-      const x = Math.cos(φ1)*Math.sin(φ2) - Math.sin(φ1)*Math.cos(φ2)*Math.cos(Δλ);
-      let θ = toDeg(Math.atan2(y,x));
-      return (θ + 360) % 360;
-    }
-
-    function updateNeedle(){
-      if(bearingToKaaba == null){ needle.style.transform = `rotate(0deg)`; return; }
-      const heading = (deviceHeading ?? 0);
-      const rotation = (bearingToKaaba - heading + offset + 360) % 360;
-      needle.style.transform = `rotate(${rotation}deg)`;
-      bearingEl.textContent = `${bearingToKaaba.toFixed(0)}°`;
-      deviceHeadingEl.textContent = deviceHeading == null ? '—°' : `${Math.round(deviceHeading)}°`;
-    }
-
-    function requestGeo(){
-      geoStatus.textContent = 'جارٍ طلب الموقع…';
-      if(!('geolocation' in navigator)){ geoStatus.textContent = 'المتصفح لا يدعم تحديد الموقع.'; return; }
-      navigator.geolocation.getCurrentPosition(pos=>{
-        userPos = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-        geoStatus.textContent = `تم تحديد الموقع: ${userPos.lat.toFixed(4)}, ${userPos.lon.toFixed(4)}`;
-        bearingToKaaba = calcBearing(userPos.lat, userPos.lon, KAABA.lat, KAABA.lon);
-        updateNeedle();
-      }, err=>{
-        geoStatus.textContent = 'تعذّر الوصول للموقع. الرجاء السماح بالموقع.';
-      }, { enableHighAccuracy:true, timeout:10000, maximumAge:0 });
-    }
-
-    function requestOrientation(){
-      const handler = (ev)=>{
-        if(typeof ev.webkitCompassHeading === 'number'){
-          deviceHeading = ev.webkitCompassHeading;
-        } else {
-          deviceHeading = (ev.alpha ?? 0);
-        }
-        updateNeedle();
-      };
-      if(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){
-        DeviceOrientationEvent.requestPermission().then(state=>{
-          if(state === 'granted'){ window.addEventListener('deviceorientation', handler, true); }
-        }).catch(()=>{});
-      } else {
-        window.addEventListener('deviceorientation', handler, true);
-      }
-    }
-
-    <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NoorAI • قارئ القرآن</title>
-  <style>
-    :root {
-      --bg: #0e0f12;
-      --panel: #14161b;
-      --border: #20222a;
-      --text: #eaeaea;
-      --muted: #a7b0bf;
-      --gold: #c9a66b;
-      --accent: #2ecc71;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: "Amiri","Scheherazade",serif; }
-    header { padding: 16px; background: #0f1115; border-bottom: 1px solid var(--border); }
-    .brand { font-weight: 700; color: var(--gold); }
-    .hint { color: var(--muted); font-size: 14px; margin-top: 6px; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 1fr; gap: 16px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
-
-    /* Accordion blocks */
-    .surah { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--panel); }
-    .surah-header {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 14px 16px; cursor: pointer; transition: background .25s ease;
-    }
-    .surah-header:hover { background: #191c22; }
-    .names { display: flex; align-items: center; gap: 12px; }
-    .num-pill { background: #0f1115; border: 1px solid var(--border); color: var(--gold); padding: 4px 8px; border-radius: 999px; font-weight: 700; min-width: 32px; text-align: center; }
-    .name-group { display: flex; flex-direction: column; }
-    .name-ar { font-weight: 700; }
-    .name-en { color: var(--muted); font-size: 14px; }
-    .actions { display: flex; align-items: center; gap: 10px; }
-    .link { color: var(--muted); font-size: 14px; text-decoration: none; border: 1px solid var(--border); padding: 6px 10px; border-radius: 8px; }
-    .link:hover { background: #191c22; color: var(--text); }
-    .arrow { font-size: 16px; transition: transform .25s ease; }
-    .arrow.down { transform: rotate(90deg); }
-
-    .surah-body {
-      max-height: 0; overflow: hidden; background: #0f1115;
-      transition: max-height .5s ease, padding .25s ease;
-      padding: 0 16px;
-      position: relative;
-    }
-    .surah-body.open { max-height: 1000px; padding: 16px; }
-    .mushaf-bg {
-      position: absolute; inset: 0; background: url('mushaf.jpg') center/cover no-repeat; opacity: 0.08; pointer-events: none;
-    }
-    .ayat { position: relative; display: grid; gap: 8px; }
-    .ayah {
-      padding: 8px 10px; border-radius: 10px; background: #12141a; line-height: 2.2; font-size: 20px;
-      transition: background .2s ease, box-shadow .2s ease;
-    }
-    .ayah:hover { background: #141a1f; box-shadow: 0 0 0 1px #1f2832 inset; }
-    .num { color: var(--gold); font-size: 13px; margin-inline-start: 8px; }
-
-    /* Change Surah panel styles */
-    .switch { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--panel); }
-    .switch-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; }
-    .switch-header:hover { background: #191c22; }
-    .switch-body { background: #0f1115; padding: 16px; }
-    .row-flex { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .label { color: var(--gold); }
-    .select {
-      padding: 8px; border-radius: 8px; border: 1px solid var(--border);
-      background: #111319; color: var(--text); min-width: 260px;
-    }
-    .status { color: var(--muted); font-size: 14px; }
-    .error { color: #ffb3b3; font-size: 14px; }
-
-    @media (max-width: 720px) {
-      .container { padding: 12px; }
-      .surah-body.open { max-height: 1400px; }
-      .name-en { font-size: 13px; }
-      .ayah { font-size: 18px; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="brand">NoorAI • قارئ القرآن</div>
-    <div class="hint">اضغط على اسم السورة لعرض آياتها، أو استخدم تغيير السورة لاختيار أي سورة فورًا.</div>
-  </header>
+<div id="surahContent" style="border:1px solid #eee;border-radius:12px;padding:12px;background:#fff"> <p style="color:var(--muted)">… محتوى السورة هنا …</p> </div> </div> </div> </div> </section> </main> <!-- Country Panel --> <div id="countryPanel" class="panel" aria-hidden="true"> if theer is anythign wrong please send it to me and give me the clean version <div class="panel-card"> <div class="panel-head"> <button class="corner-arrow" id="closePanel" aria-label="رجوع إلى الودجات">رجوع</button> <div class="panel-title" id="countryTitle">مواقيت الصلاة — البلد</div> </div> <div class="panel-body"> <div class="salat-grid" id="salatGrid"></div> <p style="color:var(--muted);margin-top:10px">المواقيت هنا توضيحية. اربط لاحقًا بواجهة برمجة (API) لحساب المواقيت حسب الموقع داخل البلد.</p> </div> </div> </div> <script> // Fade on page load document.addEventListener('DOMContentLoaded', ()=> document.body.classList.add('fade')); // Countries & placeholder prayer times const countries = [ { id:'sa', name:'السعودية', note:'مكة/الرياض', times:{ الفجر:'04:50', الظهر:'11:50', العصر:'15:10', المغرب:'17:35', العشاء:'19:05' } }, { id:'ma', name:'المغرب', note:'الرباط/الدار البيضاء', times:{ الفجر:'05:40', الظهر:'12:34', العصر:'15:45', المغرب:'17:30', العشاء:'19:00' } }, { id:'ae', name:'الإمارات', note:'أبوظبي/دبي', times:{ الفجر:'05:10', الظهر:'12:07', العصر:'15:25', المغرب:'17:34', العشاء:'19:04' } }, { id:'kw', name:'الكويت', note:'مدينة الكويت', times:{ الفجر:'05:12', الظهر:'11:52', العصر:'15:00', المغرب:'17:18', العشاء:'18:48' } }, { id:'om', name:'عُمان', note:'مسقط', times:{ الفجر:'05:05', الظهر:'12:05', العصر:'15:25', المغرب:'17:33', العشاء:'19:03' } }, { id:'bh', name:'البحرين', note:'المنامة', times:{ الفجر:'05:12', الظهر:'11:52', العصر:'15:02', المغرب:'17:19', العشاء:'18:49' } }, { id:'qa', name:'قطر', note:'الدوحة', times:{ الفجر:'05:09', الظهر:'11:49', العصر:'15:00', المغرب:'17:17', العشاء:'18:47' } }, ]; const grid = document.getElementById('countryGrid'); const countryPanel = document.getElementById('countryPanel'); const countryTitle = document.getElementById('countryTitle'); const salatGrid = document.getElementById('salatGrid'); const closePanel = document.getElementById('closePanel'); function renderCountries(){ grid.innerHTML = ''; countries.forEach(c=>{ const card = document.createElement('div'); card.className = 'card'; card.innerHTML = <h3>${c.name}</h3> <p><span class="chip">ملاحظة:</span> ${c.note}</p> <div style="display:flex;gap:10px;margin-top:8px"> <button class="btn btn-primary" data-id="${c.id}">عرض المواقيت</button> </div> ; card.querySelector('button').addEventListener('click', ()=> openCountry(c)); grid.appendChild(card); }); } function openCountry(country){ countryTitle.textContent = مواقيت الصلاة — ${country.name}; salatGrid.innerHTML = ''; const order = ['الفجر','الظهر','العصر','المغرب','العشاء']; order.forEach(name=>{ const time = country.times[name] || '—:—'; const div = document.createElement('div'); div.className = 'salat'; div.innerHTML = <h4>${name}</h4><time>${time}</time>; salatGrid.appendChild(div); }); countryPanel.classList.add('active'); countryPanel.setAttribute('aria-hidden','false'); } closePanel.addEventListener('click', ()=>{ countryPanel.classList.remove('active'); countryPanel.setAttribute('aria-hidden','true'); }); renderCountries(); // Qibla Compass const KAABA = { lat:21.4225, lon:39.8262 }; // Masjid al-Haram const needle = document.getElementById('needle'); const bearingEl = document.getElementById('bearing'); const deviceHeadingEl = document.getElementById('deviceHeading'); const geoStatus = document.getElementById('geoStatus'); const reqGeo = document.getElementById('reqGeo'); const reqOrient = document.getElementById('reqOrient'); const resetCompass = document.getElementById('resetCompass'); let userPos = null; let bearingToKaaba = null; let deviceHeading = null; let offset = 0; const toRad = d => d*Math.PI/180; const toDeg = r => r*180/Math.PI; function calcBearing(lat1,lon1,lat2,lon2){ const φ1 = toRad(lat1), φ2 = toRad(lat2); const Δλ = toRad(lon2 - lon1); const y = Math.sin(Δλ)*Math.cos(φ2); const x = Math.cos(φ1)*Math.sin(φ2) - Math.sin(φ1)*Math.cos(φ2)*Math.cos(Δλ); let θ = toDeg(Math.atan2(y,x)); return (θ + 360) % 360; } function updateNeedle(){ if(bearingToKaaba == null){ needle.style.transform = rotate(0deg); return; } const heading = (deviceHeading ?? 0); const rotation = (bearingToKaaba - heading + offset + 360) % 360; needle.style.transform = rotate(${rotation}deg); bearingEl.textContent = ${bearingToKaaba.toFixed(0)}°; deviceHeadingEl.textContent = deviceHeading == null ? '—°' : ${Math.round(deviceHeading)}°; } function requestGeo(){ geoStatus.textContent = 'جارٍ طلب الموقع…'; if(!('geolocation' in navigator)){ geoStatus.textContent = 'المتصفح لا يدعم تحديد الموقع.'; return; } navigator.geolocation.getCurrentPosition(pos=>{ userPos = { lat: pos.coords.latitude, lon: pos.coords.longitude }; geoStatus.textContent = تم تحديد الموقع: ${userPos.lat.toFixed(4)}, ${userPos.lon.toFixed(4)}; bearingToKaaba = calcBearing(userPos.lat, userPos.lon, KAABA.lat, KAABA.lon); updateNeedle(); }, err=>{ geoStatus.textContent = 'تعذّر الوصول للموقع. الرجاء السماح بالموقع.'; }, { enableHighAccuracy:true, timeout:10000, maximumAge:0 }); } function requestOrientation(){ const handler = (ev)=>{ if(typeof ev.webkitCompassHeading === 'number'){ deviceHeading = ev.webkitCompassHeading; } else { deviceHeading = (ev.alpha ?? 0); } updateNeedle(); }; if(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){ DeviceOrientationEvent.requestPermission().then(state=>{ if(state === 'granted'){ window.addEventListener('deviceorientation', handler, true); } }).catch(()=>{}); } else { window.addEventListener('deviceorientation', handler, true); } } <!DOCTYPE html> <html lang="ar" dir="rtl"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>NoorAI • قارئ القرآن</title> <style>
 
   <div class="container">
     <!-- Change Surah panel (opens by default and shows Al‑Fātiḥah) -->
@@ -1486,6 +1529,63 @@ function addMessage(content, role = 'ai', lang = 'en'){
       https://albrhe1466-dotcom.github.io/Quran_alkareem/
     </a>
   </div>
+  <style>
+  /* Force all text inside the chat to black, including pseudo-elements */
+  #messages, #messages *, 
+  .msg, .msg *, 
+  .bubble, .bubble *, 
+  .subtitle, .muted,
+  .card p, .header .subtitle {
+    color: #000 !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
 
-</body>
-</html>
+  /* Ensure all text in pseudo-elements is black too */
+  #messages::before, #messages::after,
+  #messages *::before, #messages *::after,
+  .msg::before, .msg::after,
+  .bubble::before, .bubble::after,
+  .card p::before, .card p::after {
+    color: #000 !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Neutralize bubble colors */
+  .bubble, .msg.ai .bubble, .msg.user .bubble {
+    background: #fff !important;
+    border-color: #d4d4d4 !important;
+  }
+
+  /* Force links to black */
+  #messages a, .bubble a { color: #000 !important; }
+
+  /* Override CSS variables if theme uses them */
+  :root {
+    --text: #000 !important;
+    --muted: #000 !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const selectors = [
+      '#messages', '#messages *',
+      '.msg', '.msg *',
+      '.bubble', '.bubble *',
+      '.subtitle', '.muted',
+      '.card p', '.header .subtitle'
+    ].join(',');
+
+    const forceBlack = (el) => {
+      el.style.color = '#000';
+      el.style.opacity = '1';
+      el.style.filter = 'none';
+      if (el.classList && el.classList.contains('bubble')) {
+        el.style.background = '#fff';
+        el.style.borderColor = '#d4d4d4';
+      }
+      // Also fix links
+      if (el.tagName === 'A') el.style.color = '#000';
+    };
